@@ -3,7 +3,7 @@ package ru.locate.garbage.server.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
-import ru.locate.garbage.server.model.Image;
+import ru.locate.garbage.server.model.ImageFromUser;
 import ru.locate.garbage.server.model.Point;
 
 import java.util.List;
@@ -30,4 +30,14 @@ public interface PointRepository extends JpaRepository<Point,Long> {
     Long findDistinctClusterNumber();
 
     List<Point> findAllByCluster(Long clusterNumber);
+
+//    @Query("SELECT p.id, p.statusForAdmin, p.name FROM Point p WHERE p.statusForWorker is null and p.statusForAdmin='На проверке'")
+//    List<Point> findAllForAdminRoleUser();
+//
+//    @Query("SELECT p.id, p.statusForAdmin, p.name FROM Point p WHERE p.statusForWorker is not null and p.statusForAdmin='На проверке'")
+//    List<Point> findAllForAdminRoleWorker();
+
+    List<Point> findAllByStatusForWorkerIsNullAndStatusForAdmin(String status);
+
+    List<Point> findAllByStatusForWorkerIsNotNullAndStatusForAdmin(String status);
 }

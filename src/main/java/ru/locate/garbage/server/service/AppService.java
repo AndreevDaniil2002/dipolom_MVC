@@ -5,16 +5,16 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.locate.garbage.server.model.Image;
-import ru.locate.garbage.server.model.MyUser;
-import ru.locate.garbage.server.model.Point;
-import ru.locate.garbage.server.model.Roles;
+import ru.locate.garbage.server.model.*;
+
 import ru.locate.garbage.server.repository.ImageRepository;
 import ru.locate.garbage.server.repository.PointRepository;
 import ru.locate.garbage.server.repository.UserRepository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,10 +27,48 @@ public class AppService {
     private PasswordEncoder passwordEncoder;
     private PointRepository pointRepository;
 
-    public Integer getRoleByUsername(String username) {
-        System.out.println(userRepository.findByName(username).get().getRole().ordinal());
-        return userRepository.findByName(username).get().getRole().ordinal();
+    public List<MyUser> getUsersByMask(String mask) {
+        List<MyUser> users = userRepository.findAll();
+        List<MyUser> answer = new ArrayList<>();
+        for (MyUser user : users) {
+            if (user.getName().contains(mask)) {
+                answer.add(user);
+            }
+        }
+        return answer;
     }
+
+    public List<Point> getPointsByRole(String role) {
+        if (Objects.equals(role, "user")){
+            return pointRepository.findAllByStatusForWorkerIsNullAndStatusForAdmin("На проверке");
+        }
+        else{
+            return pointRepository.findAllByStatusForWorkerIsNotNullAndStatusForAdmin("На проверке");
+        }
+    }
+
+    public void setRole(Long userId, String role){
+        userRepository.findById(userId).get().setRole(Roles.valueOf(role));
+    }
+
+    public void updateUser(MyUser user){
+        userRepository.save(user);
+    }
+
+    public String getRoleByUsername(String username) {
+        System.out.println(userRepository.findByName(username).get().getRole());
+        return userRepository.findByName(username).get().getRole().name();
+    }
+
+    public String getRoleById(Long userId) {
+        System.out.println(userRepository.findById(userId).get().getRole().ordinal());
+        return userRepository.findById(userId).get().getRole().name();
+    }
+
+    public MyUser getUserByUserId(Long userId){
+        return userRepository.findById(userId).get();
+    }
+
     public void changeLogin(String new_login, String old_login){
         MyUser user = userRepository.findByName(old_login).get();
         user.setName(new_login);
@@ -81,13 +119,13 @@ public class AppService {
         return pointRepository.findByUserId(id);
     }
 
-    public List<Image> getAllImagesByPointId(Long id){
+    public List<ImageFromUser> getAllImagesByPointId(Long id){
         System.out.println("1234567");
         return imageRepository.findByPoint(pointRepository.findById(id).get());
     }
 
     public void addPoint(Double latitude, Double longitude, String description, String username, MultipartFile file) throws IOException {
-        Image image1;
+        ImageFromUser image1;
         Point point = new Point();
         point.setLatitude(latitude);
         point.setLongitude(longitude);
@@ -107,8 +145,8 @@ public class AppService {
         pointRepository.save(point);
     }
 
-    private Image toImageEntity(MultipartFile file) throws IOException {
-        Image image = new Image();
+    private ImageFromUser toImageEntity(MultipartFile file) throws IOException {
+        ImageFromUser image = new ImageFromUser();
         image.setName(file.getName());
         image.setSize(file.getSize());
         image.setOriginalFileName(file.getOriginalFilename());

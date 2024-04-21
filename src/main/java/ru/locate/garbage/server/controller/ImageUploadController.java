@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ru.locate.garbage.server.model.Image;
+import ru.locate.garbage.server.model.ImageFromUser;
 
 @RestController
 public class ImageUploadController {
@@ -14,7 +14,7 @@ public class ImageUploadController {
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         // Логика обработки загруженного файла
         if (!file.isEmpty()) {
-            Image image = new Image();
+            ImageFromUser image = new ImageFromUser();
             image.setName(file.getOriginalFilename());
             return ResponseEntity.ok("File uploaded successfully!");
         } else {

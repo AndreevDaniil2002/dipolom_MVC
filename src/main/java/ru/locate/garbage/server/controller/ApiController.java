@@ -10,7 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.locate.garbage.server.model.Image;
+import ru.locate.garbage.server.model.ImageFromUser;
+import ru.locate.garbage.server.model.ImageFromUser;
 import ru.locate.garbage.server.model.MyUser;
 import ru.locate.garbage.server.model.Point;
 import ru.locate.garbage.server.model.Roles;
@@ -42,7 +43,7 @@ public class ApiController {
 
     //Получение картинки для точки (ту которую добавил пользователь)
     @GetMapping("point/{point_id}/image")
-    public ResponseEntity<List<Image>> getImage(@PathVariable Long point_id) {
+    public ResponseEntity<List<ImageFromUser>> getImage(@PathVariable Long point_id) {
         try {
             //System.out.println(appService.getAllImagesByPointId(point_id));
             return ResponseEntity.status(HttpStatus.OK).body(appService.getAllImagesByPointId(point_id));
@@ -125,7 +126,27 @@ public class ApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(appService.getAllPoints());
         }
     }
+    //посиск id по маске
+    @GetMapping("/user/name/{mask}")
+    public ResponseEntity<List<MyUser>> getUsersByMask(@PathVariable String mask) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getUsersByMask(mask));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
+    @GetMapping("/points/admin/{role}")
+    public ResponseEntity<List<Point>> getAdminPointsByRole(@PathVariable String role) {
+        System.out.println(appService.getPointsByRole(role));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getPointsByRole(role));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     //Получение всей инфы точки по id
     @GetMapping("/points/{pointId}")
     public ResponseEntity<Point> getPointById(@PathVariable Long pointId) {
@@ -136,6 +157,32 @@ public class ApiController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //получение роли пользователя
+    @GetMapping("/user/{userId}/role")
+    public ResponseEntity<String> getRole(@PathVariable Long userId) {
+        try {
+            System.out.println(appService.getRoleById(userId));
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getRoleById(userId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/user/{userId}/{role}")
+    public ResponseEntity<Void> setRole(@PathVariable Long userId, @PathVariable String role) {
+        try {
+            appService.setRole(userId, role);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
 
     //Публикация точки пользователем
     @PostMapping("/points")
@@ -174,30 +221,47 @@ public class ApiController {
     }
 
     //Получение ПД юзера
-    @GetMapping("/personal-data")
-    public List<String> getPersonalData (Authentication authentication){
-        if (authentication != null) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();
-            MyUser user = appService.findByLogin(username);
-            List<String> answer = new ArrayList<>();
-            answer.add(user.getName());
-            answer.add(String.valueOf(user.getRole()));
-            return answer;
+    @GetMapping("/personal-data/{userId}")
+    public ResponseEntity<MyUser> getPersonalData (@PathVariable(required = false) Long userId, Authentication authentication) {
+        if (userId != null) {
+            try {
+                System.out.println(appService.getUserByUserId(userId));
+                return ResponseEntity.status(HttpStatus.OK).body(appService.getUserByUserId(userId));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    //Замена данный пользователя
+    @PatchMapping("/user")
+    public ResponseEntity<String> updateUser(@RequestBody MyUser user) {
+        try {
+            appService.updateUser(user);
+            return ResponseEntity.status(HttpStatus.OK).body("User updated successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     //Получения списка ролей
     @GetMapping("roles")
-    public List<String> getAllRoles(){
+    public ResponseEntity<List<String>> getAllRoles(){
         List<String> answer = new ArrayList<>();
         Roles[] roles = Roles.values();
         for (Roles role : roles) {
             answer.add(String.valueOf(role));
         }
-        return answer;
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(answer);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     //================ADMIN====================

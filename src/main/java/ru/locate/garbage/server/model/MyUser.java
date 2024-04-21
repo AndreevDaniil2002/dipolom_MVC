@@ -20,6 +20,15 @@ public class MyUser {
     @Column(name= "password")
     private String password;
 
+    @Column(name="firstName")
+    private String firstName;
+
+    @Column(name="lastName")
+    private String lastName;
+
+    @Column(name="middleName")
+    private String middleName;
+
     @Column(name= "role", nullable = true)
     private Roles role;
 }

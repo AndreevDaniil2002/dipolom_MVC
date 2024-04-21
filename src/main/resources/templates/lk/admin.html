@@ -25,6 +25,10 @@
                     const listItem = document.createElement('li');
                     listItem.textContent = user.name; // Предполагаем, что у пользователя есть поле name
                     usersList.appendChild(listItem);
+                    listItem.addEventListener('click', function() {
+                        console.log(user.id)
+                        window.location.href = "personal-data?userId=" + user.id;
+                    });
                 });
             })
             .catch(error => console.error('Ошибка получения списка пользователей:', error));

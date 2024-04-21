@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Data</title>
+</head>
+<body>
+<h2>Персональные данные</h2>
+<div>
+    <label for="username">Имя пользователя:</label>
+    <span id="username"></span>
+</div>
+<div>
+    <label for="firstname">Имя:</label>
+    <span id="firstname"></span>
+</div>
+<div>
+    <label for="lastname">Фамилия:</label>
+    <span id="lastname"></span>
+</div>
+<div>
+    <label for="middlename">Отчество:</label>
+    <span id="middlename"></span>
+</div>
+<div>
+    <label for="role">Роль:</label>
+    <span id="role"></span>
+</div>
+
+<script>
+    // Функция для получения персональных данных пользователя
+
+    function getPersonalData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+        console.log(userId)
+        fetch("/api/v1/personal-data/" + userId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('username').textContent = data.name || '';
+                document.getElementById('firstname').textContent = data.firstName || '';
+                document.getElementById('lastname').textContent = data.lastName || '';
+                document.getElementById('middlename').textContent = data.middleName || '';
+                document.getElementById('role').textContent = data.role || ''; // Предполагаем, что у роли есть поле name
+            })
+            .catch(error => console.error('Ошибка получения персональных данных:', error));
+    }
+
+    // Вызываем функцию для получения персональных данных при загрузке страницы
+    getPersonalData();
+
+    document.getElementById('personal-data-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        // Собираем данные формы
+        const formData = new FormData(event.target);
+        const personalData = {};
+        formData.forEach((value, key) => personalData[key] = value);
+        // Отправляем данные на сервер
+        fetch('/api/v1/personal-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(personalData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка сохранения данных');
+                }
+                alert('Данные сохранены успешно');
+            })
+            .catch(error => console.error('Ошибка сохранения данных:', error));
+    });
+</script>
+</body>
+</html>

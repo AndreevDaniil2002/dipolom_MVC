@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name="images")
+@Table(name="imagesFromUsers")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Image {
+public class ImageFromUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")

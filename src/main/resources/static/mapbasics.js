@@ -22,8 +22,9 @@ var map;
     data.forEach(point => {
     var coordinates = [point.longitude, point.latitude];
     var placemark;
+    var preset = point.statusForUser === 'открыта' ? 'islands#greenCircleDotIcon' : 'islands#redCircleDotIcon';
     placemark = new ymaps.Placemark(coordinates, {}, {
-    preset: 'islands#blueCircleDotIcon'
+    preset: preset
 });
     map.geoObjects.add(placemark);
 });

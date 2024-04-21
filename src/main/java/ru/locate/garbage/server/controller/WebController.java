@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.locate.garbage.server.service.AppService;
 
+import java.util.Objects;
+
 @Controller
 public class WebController {
 
@@ -22,19 +24,25 @@ public class WebController {
     @GetMapping("/account")
     public String accountPage(Model model, Authentication auth){
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        Integer role = appService.getRoleByUsername(userDetails.getUsername());
-        if (role == 0)
-            return "lk/user";
-        else if (role == 1)
-            return "lk/admin";
+        String role = appService.getRoleByUsername(userDetails.getUsername());
+        if (Objects.equals(role, "USER"))
+            return "lk/index-user";
+        else if (Objects.equals(role, "ADMIN"))
+            return "lk/index-admin";
         else
             return "lk/worker";
     }
+
+//    @GetMapping("/personal-data")
+//    public String PdPage(Model model){
+//        return "personalData";
+//    }
 
     @GetMapping("/personal-data")
     public String PdPage(Model model){
         return "personalData";
     }
+
 
     @GetMapping(value = "/map")
     public String getMapPage(Model model){
@@ -57,10 +65,15 @@ public class WebController {
     }
 
     @GetMapping("/point-card")
-    public String getPointCard(Model model, HttpServletRequest request) {
+    public String getPointCard(Model model, HttpServletRequest request, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String role = appService.getRoleByUsername(userDetails.getUsername());
         String point_id = request.getParameter("id");
         model.addAttribute("pointId", point_id);
-        return "point-card";
+        if (Objects.equals(role, "USER"))
+            return "lk/card-page/index";
+        else
+            return "lk/card-page/index";
     }
 
     @GetMapping("/reject-point-card")

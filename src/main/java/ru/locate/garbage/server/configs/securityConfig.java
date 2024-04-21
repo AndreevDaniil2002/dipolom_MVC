@@ -33,6 +33,9 @@ public class securityConfig {
 //                        .requestMatchers("api/v1/admin/**").permitAll()
 //                        .requestMatchers("api/v1/roles").permitAll()
 //                        .requestMatchers("api/v1/points").permitAll()
+
+                        .requestMatchers("/map").permitAll()
+                        .requestMatchers("/api/v1/roles").permitAll()
                         .requestMatchers("/api/v1/points").permitAll()
                         .requestMatchers("/api/v1/new-user").permitAll()
                         .requestMatchers("/login/index").authenticated()
@@ -40,6 +43,8 @@ public class securityConfig {
                         .requestMatchers("/account").authenticated()
                         .requestMatchers("/point-card/**").authenticated()
                         .requestMatchers("/new-point").authenticated()
+                        .requestMatchers("/personal-data").authenticated()
+                        .requestMatchers("/points/admin").authenticated()
 //                        .requestMatchers("/").permitAll()
 //                        .requestMatchers("/map").permitAll()
 //                        .requestMatchers("/registration").permitAll()

@@ -2,16 +2,16 @@ package ru.locate.garbage.server.repository;
 
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.locate.garbage.server.model.Image;
+import ru.locate.garbage.server.model.ImageFromUser;
 import ru.locate.garbage.server.model.Point;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ImageRepository extends JpaRepository<Image, Long> {
+public interface ImageRepository extends JpaRepository<ImageFromUser, Long> {
 
     @NonNull
-    Optional<Image> findById(@NonNull Long id);
+    Optional<ImageFromUser> findById(@NonNull Long id);
 
-    List<Image> findByPoint(Point point);
+    List<ImageFromUser> findByPoint(Point point);
 }
