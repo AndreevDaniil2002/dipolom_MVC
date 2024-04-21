@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Персональные данные</title>
+</head>
+<body>
+<h1>Персональные данные</h1>
+<div id="personalData"></div>
+<p id="userLogin"></p>
+<p id="userRole"></p>
+
+<script>
+    // Выполняем Fetch-запрос к нашему REST-контроллеру
+    fetch('/api/v1/personal-data')
+        .then(response => response.json())
+        .then(data => {
+            const login = data[0]; // Получаем логин пользователя
+            const role = data[1]; // Получаем пароль пользователя
+
+            const loginElement = document.getElementById('userLogin');
+            const passwordElement = document.getElementById('userRole');
+            // Отображаем данные на странице
+            loginElement.textContent = `Login: ${login}`;
+            passwordElement.textContent = `Password: ${role}`;
+        })
+        .catch(error => {
+            console.error('Error fetching personal data:', error);
+        });
+</script>
+</body>
+</html>

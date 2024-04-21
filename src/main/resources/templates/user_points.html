@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Example</title>
+</head>
+<body>
+
+<h2>Список точек</h2>
+<ul id="pointsList">
+
+</ul>
+
+<script>
+    // Функция для выполнения запроса и получения данных
+    fetch('/api/v1/user/login')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка HTTP: ' + response.status);
+            }
+            return response.text(); // Теперь ожидаем текстовый ответ
+        })
+        .then(username => {
+            // Получаем имя пользователя
+            // Получение списка точек для указанного пользователя
+            return fetch(`/api/v1/points?username=${username}`);
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка HTTP: ' + response.status);
+            }
+            return response.text(); // Теперь ожидаем текстовый ответ
+        })
+        .then(pointsText => {
+            // Преобразуем текстовый ответ в JSON
+            const points = JSON.parse(pointsText);
+
+            // Полученные точки выводятся в список
+            const pointsList = document.getElementById('pointsList');
+            points.forEach(point => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${point.latitude}, ${point.longitude}`; // Предполагаемые свойства точки
+                listItem.addEventListener('click', function() {
+                    console.log(point.id)
+                    window.location.href = "point-card?id=" + point.id;
+                });
+                pointsList.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error('Произошла ошибка:', error);
+            // Обработка ошибок
+        });
+
+</script>
+</body>
+</html>

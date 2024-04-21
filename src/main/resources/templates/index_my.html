@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+</head>
+<body>
+<h1>Hello!</h1>
+<h2>Это главная страница нашего сайта (идите нахуй)</h2>
+<button id="LKbutton" >Личный кабинет
+    <script>
+        var button = document.getElementById('LKbutton');
+        button.addEventListener('click', function() {
+            window.location.href = '/account';
+        });
+    </script>
+</button>
+<button id="regBtn">Регистрация
+    <script>
+        var button = document.getElementById("regBtn");
+        button.addEventListener('click', function (){
+            window.location.href = '/registration'
+        });
+    </script>
+</button>
+<button id="mapBtn">Посмотреть карту
+    <script>
+        var button = document.getElementById("mapBtn");
+        button.addEventListener('click', function (){
+            window.location.href = '/map'
+        });
+    </script>
+</button>
+<button id="addPointBtn">Добавить точку
+    <script>
+        var button = document.getElementById("addPointBtn");
+        button.addEventListener('click', function (){
+            window.location.href = '/new-point'
+        });
+    </script>
+</button>
+</body>
+</html>
