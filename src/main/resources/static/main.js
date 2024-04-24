@@ -25,20 +25,19 @@ $(document).ready( () => {
             .then(res => res.text())
             .then(role => {
         if (role === "USER") {
-            let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-10/12 font-medium">Название</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  </div>';
+            let mockData = ' <div class="table-header bg-gray px-2 py-1"> ' +
+                '<div id="pointName" class="inline-block w-10/12 font-medium">Название</div> ' +
+                '<div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  ' +
+                '</div>';
             fetch(`/api/v1/points?username=${username}`)
-
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Ошибка HTTP: ' + response.status);
                     }
-                    return response.text(); // Теперь ожидаем текстовый ответ
+                    return response.text();
                 })
                 .then(pointsText => {
-                    // Преобразуем текстовый ответ в JSON
                     const points = JSON.parse(pointsText);
-
-                    // Полученные точки выводятся в список
                     const pointsList = $(".table-custom");
                     points.forEach(point => {
                         mockData += ` <a href="/point-card?id=${point.id}" class="no-underline w-full">
@@ -57,17 +56,15 @@ $(document).ready( () => {
                                         ${point.statusForUser}
                                         </div></a
                                       >`
-                            : ''}
+                                    : ''}
               
-            </div>
-          </a>`
-
+                                </div>
+                              </a>`
                     });
                     pointsList.html(mockData)
                 })
                 .catch(error => {
                     console.error('Произошла ошибка:', error);
-                    // Обработка ошибок
                 });
         }
         if (role === "ADMIN") {
@@ -80,9 +77,9 @@ $(document).ready( () => {
                     .then(data => {
                         const userList = $(".user-table");
                         data.forEach(user => {
-                            mockData += ` <a href="#changeUserProfile" class="no-underline w-full" id="${user.id}">
+                            mockData += ` <a href="/admin-user-role-change?id=${user.id}" class="no-underline w-full user-table-link" id="${user.id}">
                                 <div class="table-row-custom flex align-items-center px-2 py-1">
-                                  <div id="pointName" class="w-full font-light px-2 no-underline user-profile">
+                                  <div id="userName" class="w-full font-light px-2 no-underline user-profile">
                                     ${user.name}
                                   </div>
                                 <div
@@ -158,6 +155,72 @@ $(document).ready( () => {
     }
             )}
 
+    function handleChangeUserRoleSubmit(e){
+        e.preventDefault()
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+        const selectedRole = $('select#userRole option:selected').val()
+        setTimeout(() => {
+            fetch("api/v1/user/" + userId + "/" + selectedRole).then(() => {
+                console.log("api/v1/user/" + userId + "/" + selectedRole)
+            })
+        }, 100000)
+
+    }
+
+    if (location.pathname.includes("role-change")){
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+        fetch('/api/v1/personal-data/' + userId).then(res => res.json())
+            .then((res) => {
+                console.log("~~~~~~~~")
+                let innerUserData = '';
+                let select;
+                let dataForSelect;
+                fetch('/api/v1/roles')
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response)
+                        response.map((item) => {
+                            dataForSelect += `<option value="${item}">${item}</option>`
+                        })
+                        console.log(dataForSelect)
+                        select = '<select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">' + dataForSelect + '</select>';
+                        innerUserData += `
+                    <div class="form-row">
+                        <label for="inputName">Логин</label>
+                        <span class="my-1 block w-full message-no-input">${res.name}</span>
+                    </div>
+                     <div class="form-row">
+                        <label for="inputName">Фамилия</label>
+                        <span class="my-1 block w-full message-no-input">${res.lastName}</span>
+                    </div>
+                     <div class="form-row">
+                        <label for="inputName">Имя</label>
+                        <span class="my-1 block w-full message-no-input">${res.firstName}</span>
+                    </div>
+                    <div class="form-row">
+                    <label for="inputName">Отчество</label>
+                    <span class="my-1 block w-full message-no-input">${res.middleName}</span>
+                    </div>
+                    <div class="form-row">
+                      <label for="inputName">Роль</label>
+                      ${select}
+                    </div>
+                    <button class="ml-3 d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl" type="submit" onclick="handleChangeUserRoleSubmit()">Изменить роль</button>
+                    `
+                        $('#userDataForAdmin').html(innerUserData);
+                    })
+
+            })
+
+    }
+
+
+
+
+
+
 
     $('#searchUsersForm').off('submit').on('submit', (e) => {
         e.preventDefault();
@@ -177,7 +240,7 @@ $(document).ready( () => {
                 data = JSON.parse(data)
                 data.map((item) => {
                     mockData += `
-                <a href="/card-page" class="no-underline w-full">
+                <a href="#" class="no-underline w-full user-table-link">
                 <div class="table-row-custom flex align-items-center px-2 py-1">
                   <div id="pointName" class="w-full font-light px-2 no-underline">
                     ${item.name}
@@ -194,6 +257,14 @@ $(document).ready( () => {
 
             })
     })
+
+
+
+
+
+
+
+
     $('#searchPointsForm').on('submit', (e) => {
         e.preventDefault();
         let selected = $('#userRole>option:selected').val();
@@ -214,7 +285,7 @@ $(document).ready( () => {
                 data = JSON.parse(data)
                 data.map((item) => {
                     mockData += `
-                <a href="/card-page" class="no-underline w-full">
+                <a href="/card-page" class="no-underline w-full user-point-link">
                 <div class="table-row-custom flex align-items-center px-2 py-1">
                   <div id="pointName" class="w-full font-light px-2 no-underline">
                     ${item.name}
@@ -282,16 +353,13 @@ $(document).ready( () => {
                 const description = document.querySelector('.card-description span');
                 const name = document.querySelector('.card-name span');
 
-                // Заполняем элементы данными из полученного объекта
                 date.innerText = new Date(data.date).toISOString().split('T')[0];
                 status.innerText = data.statusForUser;
                 description.innerText = data.description;
                 point_latitude = data.latitude;
                 point_longitude = data.longitude;
                 name.innerText = data.name;
-                //console.log(point_latitude, point_longitude)\var myMap;
 
-                // Дождёмся загрузки API и готовности DOM.
                 ymaps.ready(init);
 
                 function init() {
@@ -319,9 +387,22 @@ $(document).ready( () => {
             })
             .then(data => {
                 // Создаем элемент изображения
-                const imgElement = document.querySelector('.card-img img');
-                console.log(data[0])
-                console.log(data[0].contentType, data[0].originalFileName)
+                const imgElement = document.querySelector('.card-img-user img');
+                imgElement.src = 'data:' + data[0].contentType + ';base64,' + data[0].bytes;
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        fetch("/api/v1/point/" + pointId + "/image/worker")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Создаем элемент изображения
+                const imgElement = document.querySelector('.card-img-worker img');
                 imgElement.src = 'data:' + data[0].contentType + ';base64,' + data[0].bytes;
             })
             .catch(error => {
@@ -336,69 +417,196 @@ $(document).ready( () => {
             return !~text.indexOf(val);
         }).hide();
     });
-    $(document).on('click',(e) => {
-        let link = e.target.classList.value.includes('user-profile') ? e.target.closest('a').attributes.href.value : null;
-        console.log(link)
+    // $(".user-table-link").on('click', (e) => {
+    //     console.log("~~~~~~~~")
+    //     let currentLinkID = e.target.attributes.id.value;
+    //     e.preventDefault();
+    //     let link = e.target.classList.value.includes('user-profile') ? e.target.closest('a').attributes.href.value : e.target.attributes.href.value;
+    //     console.log(currentLinkID)
+    //     let options;
+    //     let innerUserData = '';
+    //     let select;
+    //     fetch('api/v1/user/' + currentLinkID + '/role')
+    //         .then(res => res.text())
+    //         .then(res => {
+    //             let dataForSelect;
+    //             let fOption = res;
+    //             options = `<option value="${res}">${res}</option>`
+    //             fetch('/api/v1/roles')
+    //                 .then(response => response.json())
+    //                 .then(response => {
+    //                     console.log(response)
+    //                     response.map((item) => {
+    //                         console.log(fOption)
+    //                         console.log("1234 " + item)
+    //                         dataForSelect += item === fOption ? null : `<option value="${item}">${item}</option>`
+    //                     })
+    //                     options += dataForSelect;
+    //                     console.log(options)
+    //                 })
+    //             //$('#userRole').html(options);
+    //             select = "<select class=\"block min-w-[200px] w-full message-no-input\" name=\"userRole\" id=\"userRole\" value=\"USER\">" + options + "</select>"
+    //
+    //         })
+    //     fetch('/api/v1/personal-data/' + currentLinkID).then(res => res.json())
+    //         .then((res) => {
+    //
+    //             innerUserData += `
+    //                 <div class="form-row">
+    //                     <label for="inputName">Логин</label>
+    //                     <span class="my-1 block w-full message-no-input">${res.name}</span>
+    //                 </div>
+    //                  <div class="form-row">
+    //                     <label for="inputName">Фамилия</label>
+    //                     <span class="my-1 block w-full message-no-input">${res.lastName}</span>
+    //                 </div>
+    //                  <div class="form-row">
+    //                     <label for="inputName">Имя</label>
+    //                     <span class="my-1 block w-full message-no-input">${res.firstName}</span>
+    //                 </div>
+    //                 <div class="form-row">
+    //                 <label for="inputName">Отчество</label>
+    //                 <span class="my-1 block w-full message-no-input">${res.middleName}</span>
+    //                 </div>
+    //                 <div class="form-row">
+    //                   <label for="inputName">Роль</label>
+    //                   ${select}
+    //                 </div>
+    //                 `
+    //             $('#userDataForAdmin').html(innerUserData);
+    //         })
+    //
+    //     $(`${link}`).addClass('d-block');
+    //
+    // })
+    //
+    // $("#userName").on('click', (e) => {
+    //     console.log("~~~~~~~~")
+    //     let currentLinkID = e.target.attributes.id.value;
+    //     e.preventDefault();
+    //     let link = e.target.classList.value.includes('user-profile') ? e.target.closest('a').attributes.href.value : e.target.attributes.href.value;
+    //     console.log(currentLinkID)
+    //     let options;
+    //     let innerUserData = '';
+    //     let select;
+    //     fetch('api/v1/user/' + currentLinkID + '/role')
+    //         .then(res => res.text())
+    //         .then(res => {
+    //             let dataForSelect;
+    //             let fOption = res;
+    //             options = `<option value="${res}">${res}</option>`
+    //             fetch('/api/v1/roles')
+    //                 .then(response => response.json())
+    //                 .then(response => {
+    //                     console.log(response)
+    //                     response.map((item) => {
+    //                         console.log(fOption)
+    //                         console.log("1234 " + item)
+    //                         dataForSelect += item === fOption ? null : `<option value="${item}">${item}</option>`
+    //                     })
+    //                     options += dataForSelect;
+    //                     console.log(options)
+    //                 })
+    //             //$('#userRole').html(options);
+    //             select = "<select class=\"block min-w-[200px] w-full message-no-input\" name=\"userRole\" id=\"userRole\" value=\"USER\">" + options + "</select>"
+    //
+    //         })
+    //     fetch('/api/v1/personal-data/' + currentLinkID).then(res => res.json())
+    //         .then((res) => {
+    //
+    //             innerUserData += `
+    //                 <div class="form-row">
+    //                     <label for="inputName">Логин</label>
+    //                     <span class="my-1 block w-full message-no-input">${res.name}</span>
+    //                 </div>
+    //                  <div class="form-row">
+    //                     <label for="inputName">Фамилия</label>
+    //                     <span class="my-1 block w-full message-no-input">${res.lastName}</span>
+    //                 </div>
+    //                  <div class="form-row">
+    //                     <label for="inputName">Имя</label>
+    //                     <span class="my-1 block w-full message-no-input">${res.firstName}</span>
+    //                 </div>
+    //                 <div class="form-row">
+    //                 <label for="inputName">Отчество</label>
+    //                 <span class="my-1 block w-full message-no-input">${res.middleName}</span>
+    //                 </div>
+    //                 <div class="form-row">
+    //                   <label for="inputName">Роль</label>
+    //                   ${select}
+    //                 </div>
+    //                 `
+    //             $('#userDataForAdmin').html(innerUserData);
+    //         })
+    //
+    //     $(`${link}`).addClass('d-block');
+    //
+    // })
+
+    //$(document).on('click',(e) => {
+        //let link = e.target.classList.value.includes('user-profile') ? e.target.closest('a').attributes.href.value : null;
+
         // console.log(e.target.classList.value)
-        if (link) {
-            let currentLinkID = e.target.closest('a').attributes.id.value;
-            e.preventDefault();
-            console.log(currentLinkID)
-            let options;
-            let innerUserData = '';
-            fetch('api/v1/user/' + currentLinkID + '/role')
-                .then(res => res.text())
-                .then(res => {
-                    let dataForSelect;
-                    let fOption = res;
-                    options = `<option value="${res}">${res}</option>`
-                    fetch('/api/v1/roles')
-                        .then(response => response.json())
-                        .then(response => {
-                            console.log(response)
-                            response.map((item) => {
-                                console.log(fOption)
-                                dataForSelect += item.role === fOption ? '' : `<option value="${item}">${item}</option>`
-                            })
-                            options += dataForSelect;
-                            console.log(options)
-                        })
-                    $('#userRole').html(options);
-                })
+        //if (link) {
+        //    let currentLinkID = e.target.closest('a').attributes.id.value;
+        //    e.preventDefault();
+        //    console.log(currentLinkID)
+        //    let options;
+        //    let innerUserData = '';
+            // fetch('api/v1/user/' + currentLinkID + '/role')
+            //     .then(res => res.text())
+            //     .then(res => {
+            //         let dataForSelect;
+            //         let fOption = res;
+            //         options = `<option value="${res}">${res}</option>`
+            //         fetch('/api/v1/roles')
+            //             .then(response => response.json())
+            //             .then(response => {
+            //                 console.log(response)
+            //                 response.map((item) => {
+            //                     console.log(fOption)
+            //                     console.log("1234 " + item)
+            //                     dataForSelect += item === fOption ? null : `<option value="${item}">${item}</option>`
+            //                 })
+            //                 options += dataForSelect;
+            //                 console.log(options)
+            //             })
+            //         $('#userRole').html(options);
+            //     })
 
-            fetch('/api/v1/personal-data/' + currentLinkID).then(res => res.json())
-                .then((res) => {
-
-                    innerUserData += `
-                    <div class="form-row">
-                        <label for="inputName">Логин</label>
-                        <span class="my-1 block w-full message-no-input">${res.name}</span>
-                    </div>
-                     <div class="form-row">
-                        <label for="inputName">Фамилия</label>
-                        <span class="my-1 block w-full message-no-input">${res.lastName}</span>
-                    </div>
-                     <div class="form-row">
-                        <label for="inputName">Имя</label>
-                        <span class="my-1 block w-full message-no-input">${res.firstName}</span>
-                    </div>
-                    <div class="form-row">
-                    <label for="inputName">Отчество</label>
-                    <span class="my-1 block w-full message-no-input">${res.middleName}</span>
-                    </div>
-                    <div class="form-row">
-                      <label for="inputName">Роль</label>
-                      <select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">
-                        ${options}
-                      </select>
-                    </div>
-                    `
-                    $('#userDataForAdmin').html(innerUserData);
-                })
-
-            $(`${link}`).addClass('d-block');
-        }
-        if(e.target.classList.value.includes('modal')) {
+        //     fetch('/api/v1/personal-data/' + currentLinkID).then(res => res.json())
+        //         .then((res) => {
+        //
+        //             innerUserData += `
+        //             <div class="form-row">
+        //                 <label for="inputName">Логин</label>
+        //                 <span class="my-1 block w-full message-no-input">${res.name}</span>
+        //             </div>
+        //              <div class="form-row">
+        //                 <label for="inputName">Фамилия</label>
+        //                 <span class="my-1 block w-full message-no-input">${res.lastName}</span>
+        //             </div>
+        //              <div class="form-row">
+        //                 <label for="inputName">Имя</label>
+        //                 <span class="my-1 block w-full message-no-input">${res.firstName}</span>
+        //             </div>
+        //             <div class="form-row">
+        //             <label for="inputName">Отчество</label>
+        //             <span class="my-1 block w-full message-no-input">${res.middleName}</span>
+        //             </div>
+        //             <div class="form-row">
+        //               <label for="inputName">Роль</label>
+        //               <select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">
+        //                 ${options}
+        //               </select>
+        //             </div>
+        //             `
+        //             $('#userDataForAdmin').html(innerUserData);
+        //         })
+        //
+        //     $(`${link}`).addClass('d-block');
+        //}
+        //if(e.target.classList.value.includes('modal')) {
             // let currentID = e.target.attributes.id.value
             // let options;
             // if(currentID === 'changeUserProfile') {
@@ -420,10 +628,10 @@ $(document).ready( () => {
             //     // $('#userRole').html(options);
             // }
             // $(`#${currentID}`).addClass('d-block');
-        }
-        if(e.target.classList.value.includes('close__X')) {
-            let currentModal = e.target.closest('.modal').attributes.id.value;
-            $(`#${currentModal}`).removeClass('d-block');
-        }
-    })
+        //}
+        //if(e.target.classList.value.includes('close__X')) {
+        //    let currentModal = e.target.closest('.modal').attributes.id.value;
+        //    $(`#${currentModal}`).removeClass('d-block');
+        //}
+   // })
 })

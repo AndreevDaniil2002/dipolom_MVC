@@ -42,6 +42,4 @@ public class ImageFromUser {
         inserted = LocalDateTime.now();
     }
 
-
-
 }

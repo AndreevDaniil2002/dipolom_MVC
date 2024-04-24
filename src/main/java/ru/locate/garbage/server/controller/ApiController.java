@@ -10,11 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.locate.garbage.server.model.*;
 import ru.locate.garbage.server.model.ImageFromUser;
-import ru.locate.garbage.server.model.ImageFromUser;
-import ru.locate.garbage.server.model.MyUser;
-import ru.locate.garbage.server.model.Point;
-import ru.locate.garbage.server.model.Roles;
 import ru.locate.garbage.server.service.AppService;
 
 import java.io.IOException;
@@ -28,6 +25,17 @@ import java.util.List;
 public class ApiController {
 
     @Autowired private AppService appService;
+
+    @PostMapping("/point/{pointId}/close")
+    public ResponseEntity<String> finishWorkByWorker(@PathVariable Long pointId, @RequestParam("file") MultipartFile file){
+        try {
+            appService.finishWorkByWorker(pointId, file);
+            return ResponseEntity.status(HttpStatus.OK).body("");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     //Перевод точки на исполнение сотрудником
     @PostMapping("/point/worker")
@@ -52,6 +60,16 @@ public class ApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
 
+    }
+
+    @GetMapping("/point/{point_id}/image/worker")
+    public ResponseEntity<List<ImageFromWorker>> getImageWorker(@PathVariable Long point_id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getAllImagesFromWorkerByPointId(point_id));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }
     }
 
     @GetMapping("/users")
@@ -100,6 +118,7 @@ public class ApiController {
         }
     }
 
+    //Отказ точки админом
     @PostMapping("/points/reject/{pointId}")
     public ResponseEntity<String> RejectPoint(@PathVariable Long pointId) {
         System.out.println(pointId);
@@ -137,6 +156,7 @@ public class ApiController {
         }
     }
 
+    //Получение точек по роли админом
     @GetMapping("/points/admin/{role}")
     public ResponseEntity<List<Point>> getAdminPointsByRole(@PathVariable String role) {
         System.out.println(appService.getPointsByRole(role));
@@ -158,11 +178,11 @@ public class ApiController {
         }
     }
 
-    //получение роли пользователя
+    //получение роли пользователя по id
     @GetMapping("/user/{userId}/role")
-    public ResponseEntity<String> getRole(@PathVariable Long userId) {
+    public ResponseEntity<String> getRoleById(@PathVariable Long userId) {
         try {
-            System.out.println(appService.getRoleById(userId));
+            System.out.println("123412341234 " + appService.getRoleById(userId));
             return ResponseEntity.status(HttpStatus.OK).body(appService.getRoleById(userId));
         }
         catch (Exception e) {
@@ -170,6 +190,17 @@ public class ApiController {
         }
     }
 
+    //Получение роли текущего пользователя (в рамках сессии)
+    @GetMapping("/user/role")
+    public ResponseEntity<String> getRole(Authentication authentication) {
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getRoleByUsername(userDetails.getUsername()));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    //утановка роли пользователю по id
     @PostMapping("/user/{userId}/{role}")
     public ResponseEntity<Void> setRole(@PathVariable Long userId, @PathVariable String role) {
         try {
@@ -180,8 +211,6 @@ public class ApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
 
 
     //Публикация точки пользователем
@@ -264,7 +293,7 @@ public class ApiController {
         }
     }
 
-    //================ADMIN====================
+    //================Python====================
 
     @GetMapping("/admin/points/max_id")
     public ResponseEntity<Long> getMaxId() {

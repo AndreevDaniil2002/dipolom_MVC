@@ -64,16 +64,29 @@ public class WebController {
         return "user_points";
     }
 
+    @GetMapping("/admin-user-role-change")
+    public String changeRole(Model model){
+        return "lk/admin-user-role-change";
+    }
+
     @GetMapping("/point-card")
     public String getPointCard(Model model, HttpServletRequest request, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String role = appService.getRoleByUsername(userDetails.getUsername());
         String point_id = request.getParameter("id");
         model.addAttribute("pointId", point_id);
+        String statusForUser = appService.getPointStatusForUserById(Long.valueOf(point_id));
         if (Objects.equals(role, "USER"))
-            return "lk/card-page/index";
+            if (Objects.equals(statusForUser, "Открыта"))
+                return "lk/card-page/index-opened";
+            else if (Objects.equals(statusForUser, "Закрыта")){
+                return "lk/card-page/index-closed";
+            }
+            else {
+                return "lk/card-page/index-rejected";
+            }
         else
-            return "lk/card-page/index";
+            return "lk/card-page/close-point-by-worker";
     }
 
     @GetMapping("/reject-point-card")

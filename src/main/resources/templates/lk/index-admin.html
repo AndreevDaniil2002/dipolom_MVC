@@ -98,7 +98,7 @@
       <a href="/card-page" class="no-underline w-full">
         <div class="table-row-custom flex align-items-center px-2 py-1">
           <div id="pointName" class="w-full font-light px-2 no-underline">
-            оооооувз
+
           </div>
           <div id="pointStatusRow" class="text-green-500 py-1 px-3 text-center no-underline">
             Закрыта
@@ -140,7 +140,7 @@
           <div class="text-title md:w-1/2 w-full md:text-3xl text-xl">СПИСОК ТОЧЕК</div>
           <div class="search-title message-no-input flex flex-col justify-end md:flex-row md:inline-block md:w-auto  w-full md:text-3xl text-xl md:mx-2">
             <form action="" id="searchPointsForm" class="inline-block flex  text-xl flex-col justify-end md:flex-row">
-              <select class="border-none min-w-[200px] focus:outline-0" name="userRole" id="userRole">
+              <select class="border-none min-w-[200px] focus:outline-0" name="PointsByRole" id="PointsByRole">
                 <option value="">Выберете роль</option>
                 <option value="user">Юзер</option>
                 <option value="worker">Работник</option>
@@ -204,49 +204,6 @@
 
       </div>
     </div>
-    <!-- КОНЕЦ ТАБЛИЦЫ -->
-      <!-- НАЛАЛО МОДАЛОК -->
-      <div class="modals">
-        <div class="modal" id="changeUserProfile">
-          <div class="modal-body">
-            <div class="user-title md:text-4xl text-xl mb-5 text-center">
-              Данные пользователя
-            </div>
-            <form class="flex flex-col my-auto gap-2" action="" id="userDataForAdmin">
-              <div class="form-row">
-                <label for="inputName">Логин</label>
-                <span class="my-1 block w-full message-no-input">Имя</span>
-              </div>
-              <div class="form-row">
-                <label for="inputName">Фамилия</label>
-                <span class="my-1 block w-full message-no-input">Имя</span>
-              </div>
-              <div class="form-row">
-                <label for="inputName">Имя</label>
-                <span class="my-1 block w-full message-no-input">Имя</span>
-              </div>
-              <div class="form-row">
-                <label for="inputName">Отчество</label>
-                <span class="my-1 block w-full message-no-input">Имя</span>
-              </div>
-              <div class="form-row">
-                <label for="inputName">Роль</label>
-                <select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">
-                  <option value="USER">USER</option>
-                  <option value="user">Юзер</option>
-                  <option value="worker">Работник</option>
-                </select>
-              </div>
-            </form>
-
-            <div class="close__X">
-              <div class="X-left"></div>
-              <div class="X-right"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- КОНЕЦ МОДАЛОК -->
     <script src="/main.js"></script>
   </body>
 </html>

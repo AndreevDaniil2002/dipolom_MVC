@@ -53,7 +53,6 @@
     var button = document.getElementById('uploadForm');
     button.addEventListener('submit', function (event) {
         event.preventDefault(); // Предотвращаем отправку формы по умолчанию
-        console.log("!!!!!!!!!!!")
         ymaps.geolocation.get({
             mapStateAutoApply: true,
             provider: 'browser'

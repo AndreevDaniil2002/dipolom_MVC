@@ -61,7 +61,12 @@ public class Point {
     @OneToOne(mappedBy = "point", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonIgnore
-    private ImageFromUser image;
+    private ImageFromUser imageFromUser;
+
+    @OneToOne(mappedBy = "point", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonIgnore
+    private ImageFromWorker imageFromWorker;
 
 
 

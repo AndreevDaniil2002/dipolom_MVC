@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.locate.garbage.server.model.*;
 
+import ru.locate.garbage.server.repository.ImageFromWorkerRepository;
 import ru.locate.garbage.server.repository.ImageRepository;
 import ru.locate.garbage.server.repository.PointRepository;
 import ru.locate.garbage.server.repository.UserRepository;
@@ -26,6 +27,7 @@ public class AppService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private PointRepository pointRepository;
+    private ImageFromWorkerRepository imageFromWorkerRepository;
 
     public List<MyUser> getUsersByMask(String mask) {
         List<MyUser> users = userRepository.findAll();
@@ -37,6 +39,8 @@ public class AppService {
         }
         return answer;
     }
+
+
 
     public List<Point> getPointsByRole(String role) {
         if (Objects.equals(role, "user")){
@@ -61,8 +65,12 @@ public class AppService {
     }
 
     public String getRoleById(Long userId) {
-        System.out.println(userRepository.findById(userId).get().getRole().ordinal());
+        System.out.println("123412341324 " + userRepository.findById(userId).get().getRole().ordinal());
         return userRepository.findById(userId).get().getRole().name();
+    }
+
+    public String getPointStatusForUserById(Long pointId) {
+        return pointRepository.findById(pointId).get().getStatusForUser();
     }
 
     public MyUser getUserByUserId(Long userId){
@@ -124,6 +132,24 @@ public class AppService {
         return imageRepository.findByPoint(pointRepository.findById(id).get());
     }
 
+    public List<ImageFromWorker> getAllImagesFromWorkerByPointId(Long id){
+        return imageFromWorkerRepository.findAllByPoint(pointRepository.findById(id).get());
+    }
+
+    public void finishWorkByWorker(Long id, MultipartFile file) throws IOException {
+        ImageFromWorker imageFromWorker;
+        Point point = pointRepository.findById(id).get();
+        if (file.getSize() != 0){
+            imageFromWorker = toImageFromWorkerEntity(file);
+            point.setImageFromWorker(imageFromWorker);
+            imageFromWorker.setPoint(point);
+            point.setStatusForWorker("На проверке");
+            point.setStatusForAdmin("На проверке");
+            pointRepository.save(point);
+        }
+
+    }
+
     public void addPoint(Double latitude, Double longitude, String description, String username, MultipartFile file) throws IOException {
         ImageFromUser image1;
         Point point = new Point();
@@ -133,20 +159,27 @@ public class AppService {
         point.setStatusForUser("Открыта");
         point.setStatusForAdmin("На проверке");
         if (file.getSize() != 0){
-            image1 = toImageEntity(file);
-            point.setImage(image1);
+            image1 = toImageFromUserEntity(file);
+            point.setImageFromUser(image1);
             image1.setPoint(point);
         }
-        //Проверка на добавление точки, которая уже существует (нужно для тестирования)
-        //List<Point> checkIfPointExist = pointRepository.findByLatitudeAndLongitude(point.getLatitude(), point.getLongitude());
-        //System.out.println(checkIfPointExist);
         MyUser user = userRepository.findByName(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
         point.setUser(user);
         pointRepository.save(point);
     }
 
-    private ImageFromUser toImageEntity(MultipartFile file) throws IOException {
+    private ImageFromUser toImageFromUserEntity(MultipartFile file) throws IOException {
         ImageFromUser image = new ImageFromUser();
+        image.setName(file.getName());
+        image.setSize(file.getSize());
+        image.setOriginalFileName(file.getOriginalFilename());
+        image.setContentType(file.getContentType());
+        image.setBytes(file.getBytes());
+        return image;
+    }
+
+    private ImageFromWorker toImageFromWorkerEntity(MultipartFile file) throws IOException {
+        ImageFromWorker image = new ImageFromWorker();
         image.setName(file.getName());
         image.setSize(file.getSize());
         image.setOriginalFileName(file.getOriginalFilename());

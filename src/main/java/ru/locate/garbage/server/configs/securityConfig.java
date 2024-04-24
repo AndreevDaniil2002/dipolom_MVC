@@ -33,7 +33,7 @@ public class securityConfig {
 //                        .requestMatchers("api/v1/admin/**").permitAll()
 //                        .requestMatchers("api/v1/roles").permitAll()
 //                        .requestMatchers("api/v1/points").permitAll()
-
+                        .requestMatchers("admin-user-role-change").permitAll()
                         .requestMatchers("/map").permitAll()
                         .requestMatchers("/api/v1/roles").permitAll()
                         .requestMatchers("/api/v1/points").permitAll()
