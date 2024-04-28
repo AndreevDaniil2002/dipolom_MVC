@@ -18,7 +18,7 @@
     <div class="container-md">
         <div class="menu">
             <ul class="d-flex align-items-center md:justify-center bg-green py-3">
-                <li><a class="dropdown-item" href="/static">Главная</a></li>
+                <li><a class="dropdown-item" href="/">Главная</a></li>
                 <li><a class="dropdown-item" href="/lk">Личный кабинет</a></li>
                 <li>
                     <a class="dropdown-item" href="/new-point"
@@ -57,12 +57,20 @@
 
                 <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
             </div>
+            <div class="card-text mt-3 card-description">
+                <label for="card_name block">Комментарий от администратора</label>
+                <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
+                <span class="my-1 block w-full message-no-input">Комментарий от администратора</span>
+
+                <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
+            </div>
+
         </div>
         <!-- КОНЕЦ ЛЕВОЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ -->
 
         <!-- НАЧАЛО СРЕДНЕЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ -->
-        <div class="central-side flex flex-col   md:w-3/12 w-full offset-md-4">
-            <div class="card-text mt-3 card-status">
+        <div class="central-side flex flex-col   md:w-3/12 w-full offset-md-4 justify-content-end">
+            <div class="card-text mt-3 card-status card-date-open">
                 <label for="card_name block">Статус</label>
                 <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
                 <span class="my-1 block w-full message-no-input">Открыта</span>
@@ -92,7 +100,7 @@
     <!-- НАЧАЛО ОДИНАРНОЙ ФОТОГРАФИИ -->
     <div class="one-photo-wrapper">
         <div class="map-title my-3 md:my-10 font-semibold text-2xl md:text-4xl">Фотография точки</div>
-        <div class="one-photo card-img">
+        <div class="one-photo card-img-user">
             <img src="" alt="">
         </div>
     </div>
@@ -102,47 +110,5 @@
 </div>
 <!-- КОНЕЦ КАРТОЧКИ ТОЧКИ  C ВВОДОМ ДАННЫХ-->
 <script src="/main.js"></script>
-
-<form id="uploadForm" enctype="multipart/form-data" method="post">
-    <input type="file" id="fileInput" name="file">
-    <button id="getLocationButton" type="submit">закрыть точку</button>
-</form>
-<script>
-    var button = document.getElementById('uploadForm');
-    button.addEventListener('submit', function (event) {
-        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
-        ymaps.geolocation.get({
-            mapStateAutoApply: true,
-            provider: 'browser'
-        }).then(function (result) {
-            var formData = new FormData(); // Создаем объект FormData
-            var fileInput = document.getElementById('fileInput');
-            formData.append('file', fileInput.files[0]); // Добавляем выбранный файл в FormData
-            const urlParams = new URLSearchParams(window.location.search);
-            const pointId = urlParams.get('id');
-            fetch('/api/v1/point/' + pointId + '/close', {
-                    method: 'POST',
-                    // headers: {
-                    //     'Content-Type': 'application/json'
-                    // },
-                    body: formData
-                }
-            )
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.status);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    // Обработка успешного ответа
-                    alert(data); // Всплывающее окно с сообщением
-                })
-                .catch(error => {
-                    alert('Error: ' + error); // Всплывающее окно с сообщением об ошибке
-                });
-        });
-    });
-</script>
 </body>
 </html>

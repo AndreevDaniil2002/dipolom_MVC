@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.locate.garbage.server.model.*;
 
-import ru.locate.garbage.server.repository.ImageFromWorkerRepository;
-import ru.locate.garbage.server.repository.ImageRepository;
-import ru.locate.garbage.server.repository.PointRepository;
-import ru.locate.garbage.server.repository.UserRepository;
+import ru.locate.garbage.server.repository.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ public class AppService {
     private PasswordEncoder passwordEncoder;
     private PointRepository pointRepository;
     private ImageFromWorkerRepository imageFromWorkerRepository;
+    private ImageAvatarRepository imageAvatarRepository;
 
     public List<MyUser> getUsersByMask(String mask) {
         List<MyUser> users = userRepository.findAll();
@@ -39,6 +37,64 @@ public class AppService {
         }
         return answer;
     }
+
+    public void changePassword(String password, String login){
+        MyUser user = userRepository.findByName(login).orElse(null);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    public void updateUserData(String login, String name, String surname, String middleName) throws IOException {
+        MyUser user = userRepository.findByName(login).orElse(null);
+        user.setFirstName(name);
+        user.setLastName(surname);
+        user.setMiddleName(middleName);
+        userRepository.save(user);
+
+    }
+
+    public UserAvatars setUserAvatar(MultipartFile file, String login) throws IOException {
+        MyUser user = userRepository.findByName(login).orElse(null);
+        UserAvatars userAvatars;
+        if (file.getSize() != 0) {
+            userAvatars = touserAvatars(file);
+            user.setUserAvatars(userAvatars);
+            userAvatars.setUser(user);
+            userRepository.save(user);
+            return userAvatars;
+        }
+        return null;
+    }
+
+    public UserAvatars getUserAvatar(String login) throws IOException {
+        MyUser user = userRepository.findByName(login).orElse(null);
+        return imageAvatarRepository.findByUser(user);
+    }
+
+    public MyUser getUserByLogin(String login) {
+        return userRepository.findByName(login).orElse(null);
+    }
+
+    private UserAvatars touserAvatars(MultipartFile file) throws IOException {
+        UserAvatars image = new UserAvatars();
+        image.setName(file.getName());
+        image.setSize(file.getSize());
+        image.setOriginalFileName(file.getOriginalFilename());
+        image.setContentType(file.getContentType());
+        image.setBytes(file.getBytes());
+        return image;
+    }
+
+    public void closePointFromWorker(Long pointId, String comment) {
+        Point point = pointRepository.findById(pointId).orElse(null);
+        point.setCommentFromAdmin(comment);
+        point.setStatusForWorker("Закрыта");
+        point.setStatusForUser("Закрыта");
+        point.setStatusForAdmin(null);
+        pointRepository.save(point);
+    }
+
+
 
 
 
@@ -52,7 +108,11 @@ public class AppService {
     }
 
     public void setRole(Long userId, String role){
-        userRepository.findById(userId).get().setRole(Roles.valueOf(role));
+        System.out.println(userRepository.findById(userId));
+        System.out.println(Roles.valueOf(role).ordinal());
+        MyUser user = userRepository.findById(userId).orElse(null);
+        user.setRole(Roles.valueOf(role));
+        userRepository.save(user);
     }
 
     public void updateUser(MyUser user){
@@ -73,6 +133,10 @@ public class AppService {
         return pointRepository.findById(pointId).get().getStatusForUser();
     }
 
+    public String getPointStatusForWorkerById(Long pointId) {
+        return pointRepository.findById(pointId).get().getStatusForWorker();
+    }
+
     public MyUser getUserByUserId(Long userId){
         return userRepository.findById(userId).get();
     }
@@ -82,10 +146,13 @@ public class AppService {
         user.setName(new_login);
     }
 
-    public void changeWorker(String workerLogin, Point point){
+    public void changeWorker(String workerLogin, Long pointId){
         MyUser worker = userRepository.findByName(workerLogin).get();
+        Point point = pointRepository.findById(pointId).get();
         point.setWorker(worker);
         point.setStatusForAdmin(null);
+        point.setStatusForWorker("Закрыть");
+        pointRepository.save(point);
     }
 
     public void addUser(MyUser user){
@@ -112,11 +179,12 @@ public class AppService {
         return pointRepository.findAllByStatusForAdmin("На проверке");
     }
 
-    public void rejectPoint(Long pointId){
+    public void rejectPoint(Long pointId, String comment){
         Point point = pointRepository.findById(pointId).get();
         point.setStatusForAdmin(null);
         point.setStatusForWorker(null);
         point.setStatusForUser("Отклонена");
+        point.setCommentFromAdmin(comment);
         pointRepository.save(point);
     }
 
@@ -128,7 +196,6 @@ public class AppService {
     }
 
     public List<ImageFromUser> getAllImagesByPointId(Long id){
-        System.out.println("1234567");
         return imageRepository.findByPoint(pointRepository.findById(id).get());
     }
 
@@ -150,7 +217,12 @@ public class AppService {
 
     }
 
-    public void addPoint(Double latitude, Double longitude, String description, String username, MultipartFile file) throws IOException {
+    public List<Point> getAllPointForWorkerByUsername(String username){
+        MyUser worker = userRepository.findByName(username).get();
+        return pointRepository.findAllByWorker(worker);
+    }
+
+    public void addPoint(Double latitude, Double longitude, String description, String username, MultipartFile file, String name) throws IOException {
         ImageFromUser image1;
         Point point = new Point();
         point.setLatitude(latitude);
@@ -158,6 +230,7 @@ public class AppService {
         point.setDescription(description);
         point.setStatusForUser("Открыта");
         point.setStatusForAdmin("На проверке");
+        point.setName(name);
         if (file.getSize() != 0){
             image1 = toImageFromUserEntity(file);
             point.setImageFromUser(image1);

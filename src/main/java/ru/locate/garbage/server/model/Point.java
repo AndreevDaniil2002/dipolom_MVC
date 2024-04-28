@@ -40,6 +40,9 @@ public class Point {
     @Column(name="statusForAdmin")
     private String statusForAdmin;
 
+    @Column(name="commentFromAdmin")
+    private String commentFromAdmin;
+
     private Date date;
     private Long cluster;
     private Long place;

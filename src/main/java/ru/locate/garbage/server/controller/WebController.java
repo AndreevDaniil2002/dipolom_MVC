@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.locate.garbage.server.service.AppService;
 
 import java.util.Objects;
@@ -30,19 +31,13 @@ public class WebController {
         else if (Objects.equals(role, "ADMIN"))
             return "lk/index-admin";
         else
-            return "lk/worker";
+            return "lk/index-worker";
     }
-
-//    @GetMapping("/personal-data")
-//    public String PdPage(Model model){
-//        return "personalData";
-//    }
 
     @GetMapping("/personal-data")
     public String PdPage(Model model){
-        return "personalData";
+        return "forms/change-user-data";
     }
-
 
     @GetMapping(value = "/map")
     public String getMapPage(Model model){
@@ -51,12 +46,12 @@ public class WebController {
 
     @GetMapping("/registration")
     public String regPage(Model model) {
-        return "registration";
+        return "forms/registry-form";
     }
 
     @GetMapping("/new-point")
     public String addPoint(Model model) {
-        return "add_point";
+        return "forms/add-new-point";
     }
 
     @GetMapping("/my-points")
@@ -76,17 +71,31 @@ public class WebController {
         String point_id = request.getParameter("id");
         model.addAttribute("pointId", point_id);
         String statusForUser = appService.getPointStatusForUserById(Long.valueOf(point_id));
+        String statusForWorker = appService.getPointStatusForWorkerById(Long.valueOf(point_id));
+        System.out.println("1234" + role);
         if (Objects.equals(role, "USER"))
             if (Objects.equals(statusForUser, "Открыта"))
-                return "lk/card-page/index-opened";
+                return "lk/card-page-user/index-opened";
             else if (Objects.equals(statusForUser, "Закрыта")){
-                return "lk/card-page/index-closed";
+                return "lk/card-page-user/index-closed";
             }
             else {
-                return "lk/card-page/index-rejected";
+                return "lk/card-page-user/index-rejected";
             }
-        else
-            return "lk/card-page/close-point-by-worker";
+        else if (Objects.equals(role, "WORKER")){
+            if (Objects.equals(statusForWorker, "Закрыть"))
+                return "lk/card-page-worker/close-point";
+            else
+                return "lk/card-page-worker/point-closed";
+        }
+        else{
+            if (statusForWorker == null){
+                return "lk/card-page-admin/card-from-user";
+            }
+            else
+                return "lk/card-page-admin/card-from-worker";
+        }
+
     }
 
     @GetMapping("/reject-point-card")
@@ -104,6 +113,36 @@ public class WebController {
     @GetMapping("/login/index")
     public String login(Model model) {
         return "index";
+    }
+
+    @GetMapping("/signin")
+    public String signin(Model model) {
+        return "forms/login-form";
+    }
+
+    @GetMapping("/reject-point-user")
+    public String rejectPointUser(Model model) {
+        return "forms/reject-point-user";
+    }
+
+    @GetMapping("/aprove-point-user")
+    public String approvePointUser(Model model) {
+        return "forms/aprove-point-user";
+    }
+
+    @GetMapping("/reject-point-worker")
+    public String rejectPointWorker(Model model) {
+        return "forms/reject-point-worker";
+    }
+
+    @GetMapping("/aprove-point-worker")
+    public String approvePointWorker(Model model) {
+        return "forms/aprove-point-worker";
+    }
+
+    @GetMapping("/changeUserPassword")
+    public String changeUserPassword(Model model) {
+        return "forms/change-password-form";
     }
 
 }

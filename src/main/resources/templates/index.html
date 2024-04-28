@@ -30,8 +30,8 @@
                         <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
                         <li><a class="dropdown-item" href="/new-point">Добавить новую точку</a></li>
                         <li><a class="dropdown-item" href="/map">Карта</a></li>
-                        <li id="profileImg"><a class="dropdown-item" href="/profile">
-                            <img src="/img/account_circle.svg" alt=""></a>
+                        <li id="profileImg"><a class="dropdown-item" href="/account">
+                            <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square"                                 alt=""></a>
                         </li>
                     </ul>
                 </div>
@@ -58,7 +58,7 @@
         <div id="map">
 <!--            <iframe width="100%" height="400px" src="https://yandex.ru/map-widget/v1/?um=constructor%3Aede39a4da56ff7561150eac567b6566f8f135eb133ae804ed6a571321b0efcda&amp;source=constructor"></iframe>-->
             <script src="https://api-maps.yandex.ru/2.1/?apikey=cde97d8a-7675-4dd5-90c2-f7ee6e1eaec6&lang=ru_RU" type="text/javascript"></script>
-            <script src="/mapbasics.js"></script>
+<!--            <script src="/mapbasics.js"></script>-->
         </div>
         <a class="ml-3 d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl" href="/new-point">Добавить новую точку</a>
 
@@ -66,5 +66,6 @@
 
 
 <script src="/main.js"></script>
+<script src="/header.js"></script>
 </body>
 </html>

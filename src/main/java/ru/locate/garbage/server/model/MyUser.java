@@ -1,8 +1,10 @@
 package ru.locate.garbage.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -31,4 +33,9 @@ public class MyUser {
 
     @Column(name= "role", nullable = true)
     private Roles role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonIgnore
+    private UserAvatars UserAvatars;
 }

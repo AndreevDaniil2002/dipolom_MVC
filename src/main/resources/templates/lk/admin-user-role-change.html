@@ -20,7 +20,7 @@
             <div class="user-title md:text-4xl text-xl mb-5 text-center">
                 Данные пользователя
             </div>
-            <form class="flex flex-col my-auto gap-2" onsubmit="handleChangeUserRoleSubmit()" action="" id="userDataForAdmin">
+            <form class="flex flex-col my-auto gap-2 change-role" action="" id="userDataForAdmin">
                 <div class="form-row">
                     <label for="inputName">Логин</label>
                     <span class="my-1 block w-full message-no-input">Имя</span>
@@ -42,11 +42,11 @@
                     <select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">
                     </select>
                 </div>
-                <button class="ml-3 d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl" onsubmit="handleChangeUserRoleSubmit()">Изменить роль</button>
+                <button class="ml-3 d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl">Изменить роль</button>
             </form>
         </div>
     </div>
 </div>
-<script src="/main.js"></script>
+<script src="/change_role_by_admin.js"></script>
 </body>
 </html>

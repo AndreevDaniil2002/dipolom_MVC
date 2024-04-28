@@ -21,6 +21,9 @@
             <li><a class="dropdown-item" href="/">Главная</a></li>
             <li><a class="dropdown-item" href="/lk">Личный кабинет</a></li>
             <li>
+              <a class="dropdown-item" href="/registration">Регистрация</a>
+            </li>
+            <li>
               <a class="dropdown-item" href="/new-point"
                 >Добавить новую точку</a
               >
@@ -28,7 +31,7 @@
             <li><a class="dropdown-item" href="/map">Карта</a></li>
             <li id="profileImg">
               <a class="dropdown-item" href="/profile"
-                ><img src="/img/account_circle.svg" alt=""
+                ><img src="/img/account_circle.svg" id="userAvatarMenu" alt=""
               /></a>
             </li>
           </ul>
@@ -57,30 +60,12 @@
 
                     <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
                 </div>
-                <div class="card-text my-3 card-description">
-                    <label for="card_name block">Комментарий от администратора</label>
-                    <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
-                    <span class="my-1 block w-full message-no-input">Комментарий от администратора</span>
 
-                    <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
-                </div>
             </div>
             <!-- КОНЕЦ ЛЕВОЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ -->
 
-            <!--        &lt;!&ndash; НАЧАЛО СРЕДНЕЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ &ndash;&gt;-->
-            <!--        <div class="central-side flex flex-col flex md:w-3/12 w-full">-->
-            <!--            <div class="card-text mt-3">-->
-            <!--                <label for="card_name block">Дата открытия</label>-->
-            <!--                &lt;!&ndash; НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ &ndash;&gt;-->
-            <!--                <span class="my-1 block w-full message-no-input">19.04.2002</span>-->
-
-            <!--                &lt;!&ndash; НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ &ndash;&gt;-->
-            <!--            </div>-->
-            <!--        </div>-->
-            <!--        &lt;!&ndash; КОНЕЦ СРЕДНЕЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ &ndash;&gt;-->
-
-            <!-- НАЧАЛО ПРАВОЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ -->
-            <div class="left-side flex offset-md-4 justify-content-end flex-col md:w-3/12 w-full">
+            <!-- НАЧАЛО СРЕДНЕЙ СЕКЦИИ ИНФОРМАЦИИ О КАРТОЧКЕ ТОЧКИ -->
+            <div class="central-side flex flex-col   md:w-3/12 w-full offset-md-4 justify-content-end">
                 <div class="card-text mt-3 card-status">
                     <label for="card_name block">Статус</label>
                     <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
@@ -88,17 +73,10 @@
 
                     <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
                 </div>
-                <div class="card-text mt-3">
+                <div class="card-text mt-3 card-date-open card-date-open">
                     <label for="card_name block">Дата открытия</label>
                     <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
-                    <span class="my-1 block w-full message-no-input">19.04.2002</span>
-
-                    <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
-                </div>
-                <div class="card-text mt-3 card-date-open">
-                    <label for="card_name block">Дата закрытия</label>
-                    <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
-                    <span class="my-1 block w-full message-no-input">19.04.2021</span>
+                    <span class="my-1 block w-full message-no-input">Открыта</span>
 
                     <!-- НАЧАЛО ПОЛЯ БЕЗ ВВОДА ДАННЫХ В КРАТОЧКЕ ТОЧКИ -->
                 </div>
@@ -116,17 +94,39 @@
         <!-- КОНЕЦ КАРТЫ -->
 
         <!-- НАЧАЛО ОДИНАРНОЙ ФОТОГРАФИИ -->
-        <div class="one-photo-wrapper">
+        <div class="one-photo-wrapper card-img-user">
             <div class="map-title my-3 md:my-10 font-semibold text-2xl md:text-4xl">Фотография точки</div>
             <div class="one-photo card-img-user">
                 <img src="" alt="">
             </div>
         </div>
         <!-- КОНЕЦ ОДИНАРНОЙ ФОТОГРАФИИ  -->
+
+         <!-- НАЧАЛО ЗАГРУЗКИ ФОТОГРАФИИ -->
+         <div class="one-photo-wrapper">
+            <div class="map-title my-3 md:my-10 font-semibold text-2xl md:text-4xl">Ваша фотография</div>
+            <div class="upload-photo flex flex-col">
+              <form
+              class="my-1 w-full rounded-md bg-green  form-change-photo"
+              method="post"
+              enctype="multipart/form-data"
+              id="uploadPhotoFromWorkerForm"
+            >
+            <label class="input-file w-full py-10 text-xl text-white">
+              <input type="file" name="file" required id="worker-photo"/>
+              <span class=" input-file-btn my-2 block">Выбрать фото</span>
+              <!-- <span class="input-file-text">Максимум 10мб</span> -->
+            </label>
+            <button class="w-full  d-block text-center rounded-md py-3 px-5 my-1 bg-red text-white text-xl md:text-xl" id="uploadPhotoFromWorker">Закрыть точку</button>
+          </form>
+
+               
+            </div>
+        </div>
         <!-- КОНЕЦ ЗАГРУЗКИ ФОТОГРАФИИ  -->
 
     </div>
     <!-- КОНЕЦ КАРТОЧКИ ТОЧКИ  C ВВОДОМ ДАННЫХ-->
-    <script src="/main.js"></script>
-  </body>
+  <script src="/close-photo-worker.js"></script>
+</body>
 </html>

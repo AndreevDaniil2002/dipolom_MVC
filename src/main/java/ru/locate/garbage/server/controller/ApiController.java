@@ -17,6 +17,7 @@ import ru.locate.garbage.server.service.AppService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -25,6 +26,68 @@ import java.util.List;
 public class ApiController {
 
     @Autowired private AppService appService;
+
+    @GetMapping("/user/avatar")
+    public ResponseEntity<UserAvatars> getAvatar(Authentication auth){
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getUserAvatar(userDetails.getUsername()));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+    @PostMapping("/user/avatar")
+    public ResponseEntity<UserAvatars> uploadAvatar(@RequestParam("file") MultipartFile file, Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(appService.setUserAvatar(file, userDetails.getUsername()));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("personal-data/password/change")
+    public ResponseEntity<String> changePassword(@RequestParam("password") String password, Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        try {
+            appService.changePassword(password, userDetails.getUsername());
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+    }
+
+    @PostMapping("/personal-data/change")
+    public ResponseEntity<String> changePersonalData(
+                                                     @RequestParam String login,
+                                                     @RequestParam String name,
+                                                     @RequestParam String surname,
+                                                     @RequestParam String middleName)
+    {
+        try {
+            appService.updateUserData(login, name, surname, middleName);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("points/{pointId}/close/{comment}")
+    public ResponseEntity<String> closePointFromWorker(@PathVariable Long pointId, @PathVariable String comment){
+        try {
+            appService.closePointFromWorker(pointId, comment);
+            return ResponseEntity.status(HttpStatus.OK).body("Точка закрыта");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     @PostMapping("/point/{pointId}/close")
     public ResponseEntity<String> finishWorkByWorker(@PathVariable Long pointId, @RequestParam("file") MultipartFile file){
@@ -36,16 +99,27 @@ public class ApiController {
         }
     }
 
+    @GetMapping("/point/worker")
+    public ResponseEntity<List<Point>> getWorkers(Authentication auth){
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getAllPointForWorkerByUsername(userDetails.getUsername()));
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     //Перевод точки на исполнение сотрудником
-    @PostMapping("/point/worker")
-    public ResponseEntity<Point> addWorker(@RequestBody Point point, String workerLogin) {
+    @PostMapping("/point/{pointId}/worker/{login}")
+    public ResponseEntity<String> addWorker(@PathVariable Long pointId, @PathVariable String login) {
         try {
-            appService.changeWorker(workerLogin, point);
-            return new ResponseEntity<>(point, HttpStatus.OK);
+            appService.changeWorker(login, pointId);
+            return ResponseEntity.status(HttpStatus.OK).body("Сотрудник назначен");
         }
         catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -120,10 +194,10 @@ public class ApiController {
 
     //Отказ точки админом
     @PostMapping("/points/reject/{pointId}")
-    public ResponseEntity<String> RejectPoint(@PathVariable Long pointId) {
+    public ResponseEntity<String> RejectPoint(@PathVariable Long pointId, @RequestParam(required = false) String comment) {
         System.out.println(pointId);
         try {
-            appService.rejectPoint(pointId);
+            appService.rejectPoint(pointId, comment);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception e){
@@ -142,12 +216,15 @@ public class ApiController {
         } else {
             // Логика для получения всех точек независимо от пользователя
             //System.out.println(appService.getAllPoints());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(appService.getAllPoints());
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getAllPoints());
         }
     }
     //посиск id по маске
     @GetMapping("/user/name/{mask}")
     public ResponseEntity<List<MyUser>> getUsersByMask(@PathVariable String mask) {
+        if (Objects.equals(mask, "-")){
+            return ResponseEntity.status(HttpStatus.OK).body(appService.findAll());
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(appService.getUsersByMask(mask));
         }
@@ -159,7 +236,9 @@ public class ApiController {
     //Получение точек по роли админом
     @GetMapping("/points/admin/{role}")
     public ResponseEntity<List<Point>> getAdminPointsByRole(@PathVariable String role) {
-        System.out.println(appService.getPointsByRole(role));
+        if (Objects.equals(role, "-")) {
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getAllPointsForAdmin());
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(appService.getPointsByRole(role));
         }
@@ -203,6 +282,7 @@ public class ApiController {
     //утановка роли пользователю по id
     @PostMapping("/user/{userId}/{role}")
     public ResponseEntity<Void> setRole(@PathVariable Long userId, @PathVariable String role) {
+        System.out.println(userId + " " + role);
         try {
             appService.setRole(userId, role);
             return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -218,12 +298,13 @@ public class ApiController {
     public ResponseEntity<String> addPoint(@RequestParam("file") MultipartFile file,
                                            @RequestParam("latitude") double latitude,
                                            @RequestParam("longitude") double longitude,
-                                           @RequestParam("description") String description) throws IOException {
+                                           @RequestParam("description") String description,
+                                           @RequestParam("name") String name) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         //System.out.println(file.getOriginalFilename() + " " + longitude + " " + latitude + " " + description);
         try {
-            appService.addPoint(latitude, longitude, description, username, file);
+            appService.addPoint(latitude, longitude, description, username, file, name);
             return ResponseEntity.status(HttpStatus.OK).body("Point added successfully");
         }
         catch (Exception e){
@@ -234,7 +315,7 @@ public class ApiController {
     //Добавление нового юзера - регистрация
     @PostMapping("/new-user")
     public ResponseEntity<String> addUser(@RequestBody MyUser user) {
-        //System.out.println(user);
+        System.out.println(user);
         if (appService.findByLogin(user.getName()) != null) {
             // Пользователь с таким именем уже существует
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("User with this username already exists");
@@ -250,19 +331,31 @@ public class ApiController {
     }
 
     //Получение ПД юзера
-    @GetMapping("/personal-data/{userId}")
-    public ResponseEntity<MyUser> getPersonalData (@PathVariable(required = false) Long userId, Authentication authentication) {
-        if (userId != null) {
-            try {
-                System.out.println(appService.getUserByUserId(userId));
-                return ResponseEntity.status(HttpStatus.OK).body(appService.getUserByUserId(userId));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-            }
-        } else {
+    @GetMapping("/personal-data")
+    public ResponseEntity<MyUser> getPersonalData (Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String login = userDetails.getUsername();
+        try {
+            System.out.println(appService.getUserByLogin(login));
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getUserByLogin(login));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+
     }
+    //Получение ПД юзера
+    @GetMapping("/personal-data/{userId}")
+    public ResponseEntity<MyUser> getPersonalDataById (@PathVariable Long userId) {
+
+        try {
+//            System.out.println(appService.getUserByUserId(userId));
+            return ResponseEntity.status(HttpStatus.OK).body(appService.getUserByUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+    }
+
 
 
     //Замена данный пользователя
