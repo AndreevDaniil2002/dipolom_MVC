@@ -25,6 +25,9 @@ public class Point {
     @Column(name= "id")
     private Long id;
 
+    @Column(name="name")
+    private String name;
+
     @Column(name="description")
     private String description;
 
@@ -36,6 +39,9 @@ public class Point {
 
     @Column(name="statusForAdmin")
     private String statusForAdmin;
+
+    @Column(name="commentFromAdmin")
+    private String commentFromAdmin;
 
     private Date date;
     private Long cluster;
@@ -58,7 +64,12 @@ public class Point {
     @OneToOne(mappedBy = "point", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonIgnore
-    private Image image;
+    private ImageFromUser imageFromUser;
+
+    @OneToOne(mappedBy = "point", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonIgnore
+    private ImageFromWorker imageFromWorker;
 
 
 

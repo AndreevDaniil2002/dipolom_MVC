@@ -1,9 +1,3 @@
-#spring.jpa.hibernate.ddl-auto=update
-#spring.datasource.url=jdbc:mysql://localhost:3306/diplom
-#spring.datasource.username=root
-#spring.datasource.password=root
-#server.http2.enabled=true
-
 spring:
   jpa:
     hibernate:
