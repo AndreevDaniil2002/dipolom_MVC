@@ -17,11 +17,6 @@ public class WebController {
 
     @Autowired public AppService appService;
 
-    @GetMapping("/api/v1/welcome")
-    public String welcomePage(Model model){
-        return "index_my";
-    }
-
     @GetMapping("/account")
     public String accountPage(Model model, Authentication auth){
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -52,11 +47,6 @@ public class WebController {
     @GetMapping("/new-point")
     public String addPoint(Model model) {
         return "forms/add-new-point";
-    }
-
-    @GetMapping("/my-points")
-    public String getUserPoints(Model model){
-        return "user_points";
     }
 
     @GetMapping("/admin-user-role-change")
@@ -96,18 +86,6 @@ public class WebController {
                 return "lk/card-page-admin/card-from-worker";
         }
 
-    }
-
-    @GetMapping("/reject-point-card")
-    public String rejectPointCard(Model model, HttpServletRequest request) {
-        String point_id = request.getParameter("id");
-        model.addAttribute("pointId", point_id);
-        return "reject-point-card";
-    }
-
-    @GetMapping("/upload")
-    public String upload(Model model) {
-        return "image_uppload";
     }
 
     @GetMapping("/login/index")
