@@ -19,7 +19,7 @@
     <div class="menu">
       <ul class="d-flex align-items-center md:justify-center bg-green py-3">
         <li><a class="dropdown-item" href="/">Главная</a></li>
-        <li><a class="dropdown-item" href="/lk">Личный кабинет</a></li>
+        <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
 
         <li>
           <a class="dropdown-item" href="/new-point"
@@ -44,76 +44,6 @@
       <script src="https://api-maps.yandex.ru/2.1/?apikey=cde97d8a-7675-4dd5-90c2-f7ee6e1eaec6&lang=ru_RU" type="text/javascript"></script>
     </div>
     <script>
-      // var map;
-      // ymaps.ready(function() {
-      //   map = new ymaps.Map('map', {
-      //     center: [55, 34],
-      //     zoom: 10
-      //   }, {
-      //     searchControlProvider: 'yandex#search'
-      //   });
-      //
-      //   var geolocation = ymaps.geolocation
-      //   geolocation.get({
-      //     provider: 'browser',
-      //     mapStateAutoApply: true
-      //   }).then(function (result) {
-      //     result.geoObjects.options.set('preset', 'islands#redCircleIcon');
-      //     map.geoObjects.add(result.geoObjects);
-      //   });
-      //   fetch('/api/v1/points')
-      //           .then(response => response.json())
-      //           .then(data => {
-      //             data.forEach(point => {
-      //               var coordinates = [point.longitude, point.latitude];
-      //               var placemark = new ymaps.Placemark(coordinates);
-      //               map.geoObjects.add(placemark);
-      //             });
-      //           })
-      //           .catch(error => {
-      //             console.error('Error fetching points:', error);
-      //           });
-      // });
-      // var button = document.getElementById('uploadForm');
-      // button.addEventListener('submit', function (event) {
-      //   event.preventDefault(); // Предотвращаем отправку формы по умолчанию
-      //   ymaps.geolocation.get({
-      //     mapStateAutoApply: true,
-      //     provider: 'browser'
-      //   }).then(function (result) {
-      //     var userCoodinates = result.geoObjects.get(0).geometry.getCoordinates();
-      //     var description = document.getElementById("description").value
-      //     var formData = new FormData(); // Создаем объект FormData
-      //     var fileInput = document.getElementById('fileInput');
-      //     formData.append('file', fileInput.files[0]); // Добавляем выбранный файл в FormData
-      //     formData.append('latitude', userCoodinates[1])
-      //     formData.append("longitude", userCoodinates[0])
-      //     formData.append("description", description)
-      //     var locationData = {
-      //       latitude: userCoodinates[0],
-      //       longitude: userCoodinates[1],
-      //       description: formData,
-      //     };
-      //     fetch('/api/v1/points', {
-      //               method: 'POST',
-      //               body: formData
-      //             }
-      //     )
-      //             .then(response => {
-      //               if (!response.ok) {
-      //                 throw new Error(response.status);
-      //               }
-      //               return response.text();
-      //             })
-      //             .then(data => {
-      //               alert(data);
-      //               window.location.href = '/';
-      //             })
-      //             .catch(error => {
-      //               alert('Error: ' + error); // Всплывающее окно с сообщением об ошибке
-      //             });
-      //   });
-      // });
     </script>
     <div class="form-wrapper flex flex-col md:flex-row">
       <div class="left-side md:w-1/2 w-full md:mr-1">
@@ -148,6 +78,7 @@
 
   </form>
 </div>
+<div class="g-spacer my-20"></div>
 <script src="/addNewPoint.js"></script>
 </body>
 </html>

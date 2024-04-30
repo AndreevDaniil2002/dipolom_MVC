@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="points_v7")
+@Table(name="points")
 public class Point {
     @Column(name= "latitude", nullable = false)
     private double latitude;

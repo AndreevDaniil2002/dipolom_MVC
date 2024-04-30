@@ -42,7 +42,6 @@
     font-weight: 700;
 }
 #map{
-    /* поменял margin */
     margin: 1rem 0;
     max-height: 500px;
     max-width: 100%;
@@ -103,7 +102,6 @@
 }
 .change-name-wrapper span{
     display: inline-block;
-    /* height: 2rem; */
     margin-top: .2rem;
     padding: .4rem 1.4rem;
     border: 2px solid transparent;

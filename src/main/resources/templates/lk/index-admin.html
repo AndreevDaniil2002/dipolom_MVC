@@ -72,8 +72,8 @@
         <div class="flex flex-col justify-between md:flex-row">
           <div class="text-title md:w-1/2 w-full md:text-3xl text-xl">СПИСОК ПОЛЬЗОВАТЕЛЕЙ</div>
           <div class="search-title message-no-input flex flex-col justify-end md:flex-row md:w-1/2 w-full md:text-3xl text-xl md:mx-2">
-            <form action="" id="searchUsersForm" class="w-full flex flex-col justify-end md:flex-row">
-              <input type="text" class="w-full text-xl focus:outline-0" id="userSearch" placeholder="Введите имя пользователя">
+            <form action="" id="searchUsersForm" class="w-full flex flex-row justify-end md:flex-row">
+              <input type="text" class="w-full text-xl focus:outline-0" id="userSearch" placeholder="Введите логин">
               <input type="submit" value="&#128269;">
             </form>
 
@@ -84,9 +84,9 @@
     <div
     class="container-md max-h-[600px] my-3 md:my-10 overflow-scroll md:overflow-auto table-wrapper"
   >
-    <div class="table-custom user-table w-[700px] md:w-full">
+    <div class="table-custom user-table w-full">
       <div class="table-header bg-gray px-2 py-1">
-        <div id="pointName" class="inline-block w-10/12 font-medium">
+        <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">
           ИМЯ
         </div>
         <div id="pointStatus" class="inline-block py-1 px-3 font-medium">
@@ -139,7 +139,7 @@
         <div class="flex flex-col justify-between md:flex-row">
           <div class="text-title md:w-1/2 w-full md:text-3xl text-xl">СПИСОК ТОЧЕК</div>
           <div class="search-title message-no-input flex flex-col justify-end md:flex-row md:inline-block md:w-1/2 w-full md:text-3xl text-xl md:mx-2">
-            <form action="" id="searchPointsForm" class=" flex w-full text-xl flex-col justify-between md:flex-row">
+            <form action="" id="searchPointsForm" class=" flex w-full text-xl flex-row justify-between md:flex-row">
               <select class="border-none w-full focus:outline-0" name="PointsByRole" id="PointsByRole">
                 <option value="">Выберете роль</option>
                 <option value="user">Юзер</option>
@@ -155,9 +155,9 @@
     <div
       class="container-md max-h-[600px] my-3 md:my-10 overflow-scroll md:overflow-auto table-wrapper"
     >
-      <div class="table-custom table-points w-[700px] md:w-full">
+      <div class="table-custom table-points w-full">
         <div class="table-header bg-gray px-2 py-1">
-          <div id="pointName" class="inline-block w-10/12 font-medium">
+          <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">
             Название
           </div>
           <div id="pointStatus" class="inline-block py-1 px-3 font-medium">

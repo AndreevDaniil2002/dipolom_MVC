@@ -92,12 +92,9 @@ $(document).ready( () => {
             .then(role => {
         if (role === "USER") {
             let mockData = ' <div class="table-header bg-gray px-2 py-1"> ' +
-                '<div id="pointName" class="inline-block w-10/12 font-medium">Название</div> ' +
+                '<div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">Название</div> ' +
                 '<div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  ' +
                 '</div>';
-
-
-
             fetch(`/api/v1/points?username=${username}`)
                 .then(response => {
                     if (!response.ok) {
@@ -140,7 +137,7 @@ $(document).ready( () => {
 
             // Функция для получения данных по URL и обновления списка пользователей
             function getUsers() {
-                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-10/12 font-medium">Логин</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Роль</div>  </div>';
+                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">Логин</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Роль</div>  </div>';
                 fetch('/api/v1/users')
                     .then(response => response.json())
                     .then(data => {
@@ -172,7 +169,7 @@ $(document).ready( () => {
 
             // Функция для получения данных по URL и обновления списка точек на проверке
             function getPoints() {
-                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-10/12 font-medium">Название</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  </div>';
+                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">Название</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  </div>';
                 fetch('/api/v1/points/admin')
                     .then(response => {
                         if (!response.ok) {

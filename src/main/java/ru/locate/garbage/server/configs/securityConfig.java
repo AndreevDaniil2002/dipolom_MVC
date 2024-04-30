@@ -31,12 +31,10 @@ public class securityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("admin-user-role-change").permitAll()
                         .requestMatchers("/map").permitAll()
-                        .requestMatchers("/api/v1/roles").permitAll()
                         .requestMatchers("/api/v1/points").permitAll()
                         .requestMatchers("/api/v1/new-user").permitAll()
-                        .requestMatchers("/login/index").authenticated()
+                        .requestMatchers("api/v1/admin/**").permitAll()
                         .requestMatchers("/api/v1/**").authenticated()
                         .requestMatchers("/account").authenticated()
                         .requestMatchers("/point-card/**").authenticated()

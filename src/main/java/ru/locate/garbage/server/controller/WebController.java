@@ -62,9 +62,8 @@ public class WebController {
         model.addAttribute("pointId", point_id);
         String statusForUser = appService.getPointStatusForUserById(Long.valueOf(point_id));
         String statusForWorker = appService.getPointStatusForWorkerById(Long.valueOf(point_id));
-        System.out.println("1234" + role);
         if (Objects.equals(role, "USER"))
-            if (Objects.equals(statusForUser, "Открыта"))
+            if (Objects.equals(statusForUser, "Открыта") || Objects.equals(statusForUser, "Отклонена"))
                 return "lk/card-page-user/index-opened";
             else if (Objects.equals(statusForUser, "Закрыта")){
                 return "lk/card-page-user/index-closed";

@@ -293,7 +293,7 @@ public class ApiController {
     }
 
 
-    //Публикация точки пользователем
+
     @PostMapping("/points")
     public ResponseEntity<String> addPoint(@RequestParam("file") MultipartFile file,
                                            @RequestParam("latitude") double latitude,
@@ -302,7 +302,6 @@ public class ApiController {
                                            @RequestParam("name") String name) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        //System.out.println(file.getOriginalFilename() + " " + longitude + " " + latitude + " " + description);
         try {
             appService.addPoint(latitude, longitude, description, username, file, name);
             return ResponseEntity.status(HttpStatus.OK).body("Point added successfully");
