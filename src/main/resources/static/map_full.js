@@ -1,7 +1,7 @@
 $(document).ready(() => {
     var map;
     ymaps.ready(function() {
-        map = new ymaps.Map("map", {
+        map = new ymaps.Map('map', {
             center: [55, 34],
             zoom: 10
         }, {
@@ -23,8 +23,10 @@ $(document).ready(() => {
                 data.forEach(point => {
                     var coordinates = [point.longitude, point.latitude];
                     var placemark;
+                    var preset = point.statusForUser === 'Закрыта' ?
+                        'islands#greenCircleDotIcon' : 'islands#redCircleDotIcon';
                     placemark = new ymaps.Placemark(coordinates, {}, {
-                        preset: 'islands#blueCircleDotIcon'
+                        preset: preset
                     });
                     map.geoObjects.add(placemark);
                 });
@@ -38,15 +40,10 @@ $(document).ready(() => {
                     }
                 });
 
-                // Построение фигур для каждой группы точек
                 Object.values(groupedPoints).forEach(clusterPoints => {
-                    // Фильтрация точек в группе: оставляем только те, у которых place !== -1
                     const filteredPoints = clusterPoints.filter(point => point.place !== -1);
-                    // Сортировка точек по place
                     filteredPoints.sort((a, b) => a.place - b.place);
-                    // Получение координат вершин для построения фигуры
                     const coordinates = filteredPoints.map(point => [point.longitude, point.latitude]);
-                    // Построение фигуры
                     const polygon = new ymaps.Polygon([coordinates], {}, {
                         fillColor: '#d35a5a',
                         strokeColor: '#e30909',

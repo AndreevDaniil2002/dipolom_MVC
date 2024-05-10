@@ -14,29 +14,23 @@
       <title>Личный кабинет</title>
     </head>
     <body>
-      <!-- НАЧАЛО МЕНЮ -->
-      <header class="bg-green overflow-scroll">
-        <div class="container-md">
-          <div class="menu">
-            <ul class="d-flex align-items-center md:justify-center bg-green py-3">
-              <li><a class="dropdown-item" href="/">Главная</a></li>
-              <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
-              <li>
-                <a class="dropdown-item" href="/new-point"
-                  >Добавить новую точку</a
-                >
-              </li>
-              <li><a class="dropdown-item" href="/map">Карта</a></li>
-              <li id="profileImg">
-                <a class="dropdown-item" href="/profile"
-                  ><img src="/img/account_circle.svg" id="userAvatarMenu" alt=""
-                /></a>
-              </li>
-            </ul>
-          </div>
+    <!-- НАЧАЛО МЕНЮ -->
+    <header class="bg-green overflow-scroll ">
+      <div class="container-md">
+        <div class="menu">
+          <ul class=" d-flex align-items-center xl:justify-center bg-green py-3">
+            <li><a class="dropdown-item " href="/">Главная</a></li>
+            <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
+            <li><a class="dropdown-item" href="/new-point">Добавить новую точку</a></li>
+            <li><a class="dropdown-item" href="/map">Карта</a></li>
+            <li id="profileImg"><a class="dropdown-item" href="/account">
+              <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square"                                 alt=""></a>
+            </li>
+          </ul>
         </div>
-      </header>
-      <!--КОНЕЦ МЕНЮ -->
+      </div>
+    </header>
+    <!--КОНЕЦ МЕНЮ -->
     <!-- НАЧАЛО ЛК -->
     <div class="container-md my-3 md:my-10">
       <form
@@ -73,7 +67,7 @@
           <div class="text-title md:w-1/2 w-full md:text-3xl text-xl">СПИСОК ПОЛЬЗОВАТЕЛЕЙ</div>
           <div class="search-title message-no-input flex flex-col justify-end md:flex-row md:w-1/2 w-full md:text-3xl text-xl md:mx-2">
             <form action="" id="searchUsersForm" class="w-full flex flex-row justify-end md:flex-row">
-              <input type="text" class="w-full text-xl focus:outline-0" id="userSearch" placeholder="Введите логин">
+              <input type="text" class="w-full text-md ml-1 focus:outline-0" id="userSearch" placeholder="Введите логин">
               <input type="submit" value="&#128269;">
             </form>
 
@@ -204,6 +198,8 @@
 
       </div>
     </div>
+    <div class="g-spacer my-20"></div>
     <script src="/main.js"></script>
+    <script src="/header.js"></script>
   </body>
 </html>

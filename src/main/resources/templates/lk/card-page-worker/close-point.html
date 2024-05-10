@@ -13,32 +13,23 @@
     <title>Личный кабинет</title>
   </head>
   <body>
-    <!-- НАЧАЛО МЕНЮ -->
-    <header class="bg-green overflow-scroll">
+  <!-- НАЧАЛО МЕНЮ -->
+  <header class="bg-green overflow-scroll ">
       <div class="container-md">
-        <div class="menu">
-          <ul class="d-flex align-items-center md:justify-center bg-green py-3">
-            <li><a class="dropdown-item" href="/">Главная</a></li>
-            <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
-            <li>
-              <a class="dropdown-item" href="/registration">Регистрация</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="/new-point"
-                >Добавить новую точку</a
-              >
-            </li>
-            <li><a class="dropdown-item" href="/map">Карта</a></li>
-            <li id="profileImg">
-              <a class="dropdown-item" href="/profile"
-                ><img src="/img/account_circle.svg" id="userAvatarMenu" alt=""
-              /></a>
-            </li>
-          </ul>
-        </div>
+          <div class="menu">
+              <ul class=" d-flex align-items-center xl:justify-center bg-green py-3">
+                  <li><a class="dropdown-item " href="/">Главная</a></li>
+                  <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
+                  <li><a class="dropdown-item" href="/new-point">Добавить новую точку</a></li>
+                  <li><a class="dropdown-item" href="/map">Карта</a></li>
+                  <li id="profileImg"><a class="dropdown-item" href="/account">
+                      <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square"                                 alt=""></a>
+                  </li>
+              </ul>
+          </div>
       </div>
-    </header>
-    <!--КОНЕЦ МЕНЮ -->
+  </header>
+  <!--КОНЕЦ МЕНЮ -->
     
     <!-- НАЧАЛО КАРТОЧКИ ТОЧКИ -->
     <div class="container-md my-1.5 md:my-10 ">
@@ -129,5 +120,6 @@
     <div class="g-spacer my-20"></div>
     <!-- КОНЕЦ КАРТОЧКИ ТОЧКИ  C ВВОДОМ ДАННЫХ-->
   <script src="/close-photo-worker.js"></script>
+<script src="/header.js"></script>
 </body>
 </html>

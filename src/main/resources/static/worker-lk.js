@@ -31,12 +31,12 @@ $(document).ready(() => {
                                     ${1 ?
                             ` <a
                                         href="point-card?id=${point.id}"
-                                        class=""
+                                        class="${point.statusForWorker === 'Закрыть' ? 'bg-red rounded' : ''}"
                                         ><div
                                           id="pointStatusRow"
                                           class="py-1 px-3 text-center no-underline text-red"
                                         >
-                                        ${point.statusForWorker}
+                                        ${point.statusForWorker} 
                                         </div></a
                                       >`
                             : ''}

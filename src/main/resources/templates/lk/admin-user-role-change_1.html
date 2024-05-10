@@ -14,6 +14,23 @@
     <title>Личный кабинет</title>
 </head>
 <body>
+<!-- НАЧАЛО МЕНЮ -->
+<header class="bg-green overflow-scroll ">
+    <div class="container-md">
+        <div class="menu">
+            <ul class=" d-flex align-items-center xl:justify-center bg-green py-3">
+                <li><a class="dropdown-item " href="/">Главная</a></li>
+                <li><a class="dropdown-item" href="/account">Личный кабинет</a></li>
+                <li><a class="dropdown-item" href="/new-point">Добавить новую точку</a></li>
+                <li><a class="dropdown-item" href="/map">Карта</a></li>
+                <li id="profileImg"><a class="dropdown-item" href="/account">
+                    <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square"                                 alt=""></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<!--КОНЕЦ МЕНЮ -->
 <div class="modals">
     <div class="" id="changeUserProfile">
         <div class="modal-body">
@@ -49,5 +66,6 @@
 </div>
 <div class="g-spacer my-20"></div>
 <script src="/change_role_by_admin.js"></script>
+<script src="/header.js"></script>
 </body>
 </html>

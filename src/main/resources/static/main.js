@@ -292,7 +292,7 @@ $(document).ready( () => {
         console.log(search)
         $('user-table')
         let mockData = `<div class="table-header bg-gray px-2 py-1">
-        <div id="pointName" class="inline-block w-10/12 font-medium">
+        <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">
           ИМЯ
         </div>
         <div id="pointStatus" class="inline-block py-1 px-3 font-medium">
@@ -331,7 +331,7 @@ $(document).ready( () => {
             selected = "-"
         }
         let mockData = `<div class="table-header bg-gray px-2 py-1">
-        <div id="pointName" class="inline-block w-10/12 font-medium">
+        <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">
           ТОЧКА
         </div>
         <div id="pointStatus" class="inline-block py-1 px-3 font-medium">

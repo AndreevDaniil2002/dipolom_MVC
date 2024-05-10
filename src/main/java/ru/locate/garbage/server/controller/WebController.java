@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import ru.locate.garbage.server.service.AppService;
 
 import java.util.Objects;
@@ -51,7 +50,7 @@ public class WebController {
 
     @GetMapping("/admin-user-role-change")
     public String changeRole(Model model){
-        return "lk/admin-user-role-change";
+        return "lk/admin-user-role-change_1";
     }
 
     @GetMapping("/point-card")
