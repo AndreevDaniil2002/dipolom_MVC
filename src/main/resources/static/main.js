@@ -1,11 +1,4 @@
 $(document).ready( () => {
-    const CONSTS = {
-        BASE_HOST: location.origin,
-        GET_INFO_URL: location.origin + '/user/login/',
-        CHANGE_NAME: location.origin + '/api/v1/user/login/',
-        GET_ALL_POINTS: location.origin + '/api/v1/points/?username=' + localStorage.getItem('userName')
-    }
-
     if(location.pathname === "/"){
         var map;
         ymaps.ready(function() {
@@ -137,7 +130,9 @@ $(document).ready( () => {
 
             // Функция для получения данных по URL и обновления списка пользователей
             function getUsers() {
-                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">Логин</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Роль</div>  </div>';
+                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" ' +
+                    'class="inline-block w-2/3 md:w-10/12 font-medium">Логин</div> <div id="pointStatus" ' +
+                    'class="inline-block py-1 px-3 font-medium">Роль</div>  </div>';
                 fetch('/api/v1/users')
                     .then(response => response.json())
                     .then(data => {
@@ -157,31 +152,28 @@ $(document).ready( () => {
               
             </div>
           </a>`
-
                         });
                         userList.html(mockData)
                     })
                     .catch(error => {
                         console.error('Произошла ошибка:', error);
-                        // Обработка ошибок
                     });
             }
 
-            // Функция для получения данных по URL и обновления списка точек на проверке
             function getPoints() {
-                let mockData = ' <div class="table-header bg-gray px-2 py-1"> <div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">Название</div> <div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  </div>';
+                let mockData = ' <div class="table-header bg-gray px-2 py-1"> ' +
+                    '<div id="pointName" class="inline-block w-2/3 md:w-10/12 font-medium">Название</div> ' +
+                    '<div id="pointStatus" class="inline-block py-1 px-3 font-medium">Cтатус</div>  </div>';
                 fetch('/api/v1/points/admin')
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Ошибка HTTP: ' + response.status);
                         }
-                        return response.text(); // Теперь ожидаем текстовый ответ
+                        return response.text();
                     })
                     .then(pointsText => {
-                        // Преобразуем текстовый ответ в JSON
                         const points = JSON.parse(pointsText);
 
-                        // Полученные точки выводятся в список
                         const pointsList = $(".table-points");
                         points.forEach(point => {
                             mockData += ` <a href="/point-card?id=${point.id}" class="no-underline w-full">
@@ -213,33 +205,17 @@ $(document).ready( () => {
                         // Обработка ошибок
                     });
             }
-
-            // Вызываем функции для получения данных и обновления списков при загрузке страницы
             getUsers();
             getPoints();
         }
     }
             )}
 
-    function handleChangeUserRoleSubmit(e){
-        e.preventDefault()
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
-        const selectedRole = $('select#userRole option:selected').val()
-        setTimeout(() => {
-            fetch("api/v1/user/" + userId + "/" + selectedRole).then(() => {
-                console.log("api/v1/user/" + userId + "/" + selectedRole)
-            })
-        }, 100000)
-
-    }
-
     if (location.pathname.includes("role-change")){
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('id');
         fetch('/api/v1/personal-data/' + userId).then(res => res.json())
             .then((res) => {
-                console.log("~~~~~~~~")
                 let innerUserData = '';
                 let select;
                 let dataForSelect;
@@ -251,7 +227,8 @@ $(document).ready( () => {
                             dataForSelect += `<option value="${item}">${item}</option>`
                         })
                         console.log(dataForSelect)
-                        select = '<select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">' + dataForSelect + '</select>';
+                        select = '<select class="block min-w-[200px] w-full message-no-input" name="userRole" id="userRole" value="USER">'
+                            + dataForSelect + '</select>';
                         innerUserData += `
                     <div class="form-row">
                         <label for="inputName">Логин</label>
@@ -273,13 +250,12 @@ $(document).ready( () => {
                       <label for="inputName">Роль</label>
                       ${select}
                     </div>
-                    <button class="ml-3 d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl" type="button" onclick="handleChangeUserRoleSubmit(event)">Изменить роль</button>
+                    <button class="ml-3 d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green 
+                    text-white text-xl md:text-xl" type="button">Изменить роль</button>
                     `
                         $('#userDataForAdmin').html(innerUserData);
                     })
-
             })
-
     }
 
     $('#searchUsersForm').off('submit').on('submit', (e) => {

@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -70,16 +66,7 @@ public class Point {
     @ToString.Exclude
     @JsonIgnore
     private ImageFromWorker imageFromWorker;
-
-
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Image> images = new ArrayList<>();
-//
-//
-//    public void addImage(Image image) {
-//        image.setPoint(this);
-//        images.add(image);
-//    }
-
 }
+
+
+

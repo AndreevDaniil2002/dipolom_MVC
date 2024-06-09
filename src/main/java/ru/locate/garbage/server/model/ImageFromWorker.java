@@ -40,3 +40,4 @@ public class ImageFromWorker {
         inserted = LocalDateTime.now();
     }
 }
+

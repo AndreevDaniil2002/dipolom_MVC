@@ -44,7 +44,8 @@ public class AppService {
         userRepository.save(user);
     }
 
-    public void updateUserData(String login, String name, String surname, String middleName) throws IOException {
+    public void updateUserData(String login, String name, String surname, String middleName)
+            throws IOException {
         MyUser user = userRepository.findByName(login).orElse(null);
         user.setFirstName(name);
         user.setLastName(surname);
@@ -95,9 +96,6 @@ public class AppService {
     }
 
 
-
-
-
     public List<Point> getPointsByRole(String role) {
         if (Objects.equals(role, "user")){
             return pointRepository.findAllByStatusForWorkerIsNullAndStatusForAdmin("На проверке");
@@ -108,8 +106,6 @@ public class AppService {
     }
 
     public void setRole(Long userId, String role){
-        System.out.println(userRepository.findById(userId));
-        System.out.println(Roles.valueOf(role).ordinal());
         MyUser user = userRepository.findById(userId).orElse(null);
         user.setRole(Roles.valueOf(role));
         userRepository.save(user);
@@ -120,12 +116,10 @@ public class AppService {
     }
 
     public String getRoleByUsername(String username) {
-        System.out.println(userRepository.findByName(username).get().getRole());
         return userRepository.findByName(username).get().getRole().name();
     }
 
     public String getRoleById(Long userId) {
-        System.out.println("123412341324 " + userRepository.findById(userId).get().getRole().ordinal());
         return userRepository.findById(userId).get().getRole().name();
     }
 
@@ -191,7 +185,6 @@ public class AppService {
     public List<Point> getAllPointsByUserName(String name){
         Optional<MyUser> userOptional = userRepository.findByName(name);
         Long id = userOptional.get().getId();
-        //System.out.println("12345" + pointRepository.findByUserId(id));
         return pointRepository.findByUserId(id);
     }
 
@@ -222,7 +215,8 @@ public class AppService {
         return pointRepository.findAllByWorker(worker);
     }
 
-    public void addPoint(Double latitude, Double longitude, String description, String username, MultipartFile file, String name) throws IOException {
+    public void addPoint(Double latitude, Double longitude, String description,
+                         String username, MultipartFile file, String name) throws IOException {
         ImageFromUser image1;
         Point point = new Point();
         point.setLatitude(latitude);
@@ -236,7 +230,8 @@ public class AppService {
             point.setImageFromUser(image1);
             image1.setPoint(point);
         }
-        MyUser user = userRepository.findByName(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        MyUser user = userRepository.findByName(username).
+                orElseThrow(() -> new IllegalArgumentException("User not found"));
         point.setUser(user);
         pointRepository.save(point);
     }
@@ -262,7 +257,8 @@ public class AppService {
     }
 
     public void addPointFromPython(Point point){
-        MyUser user = userRepository.findById(452L).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        MyUser user = userRepository.findById(452L).
+                orElseThrow(() -> new IllegalArgumentException("User not found"));
         point.setUser(user);
         pointRepository.save(point);
     }
@@ -280,21 +276,16 @@ public class AppService {
     }
 
     public void UpdatePointClusterById(Long id, Long clusterNumber){
-
-        Point point = pointRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Точка с указанным ID не найдена"));
-
-        // Обновляем поле clusterNumber
+        Point point = pointRepository.findById(id).
+                orElseThrow(() -> new IllegalArgumentException("Точка с указанным ID не найдена"));
         point.setCluster(clusterNumber);
-
-        // Сохраняем обновленную точку в базу данных
         pointRepository.save(point);
     }
 
     public void UpdatePointPlaceById(Long id, Long place){
-
-        Point point = pointRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Точка с указанным ID не найдена"));
+        Point point = pointRepository.findById(id).
+                orElseThrow(() -> new IllegalArgumentException("Точка с указанным ID не найдена"));
         point.setPlace(place);
-        System.out.println(point);
         pointRepository.save(point);
     }
 

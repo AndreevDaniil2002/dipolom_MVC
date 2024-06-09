@@ -1,5 +1,4 @@
 $(document).ready( () => {
-
     fetch("api/v1/user/avatar")
         .then(res => res.json())
         .then(data => {
@@ -8,3 +7,4 @@ $(document).ready( () => {
             imgElement.src = 'data:' + data.contentType + ';base64,' + data.bytes;
         })
 })
+

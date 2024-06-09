@@ -23,7 +23,7 @@
                   <li><a class="dropdown-item" href="/new-point">Добавить новую точку</a></li>
                   <li><a class="dropdown-item" href="/map">Карта</a></li>
                   <li id="profileImg"><a class="dropdown-item" href="/account">
-                      <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square"                                 alt=""></a>
+                      <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square" alt=""></a>
                   </li>
               </ul>
           </div>
@@ -32,26 +32,19 @@
   <!--КОНЕЦ МЕНЮ -->
     <div class="container-md my-1.5 md:my-10 ">
 
-    <form id="saveAprovePoint" method="post" class="login-form md:w-2/3 xl:w-1/2 md:max-w-[600px] w-full mx-auto md:my-10 my-3" enctype="application/x-www-form-urlencoded">
+    <form id="saveAprovePoint" method="post" class="login-form md:w-2/3 xl:w-1/2 md:max-w-[600px] w-full mx-auto md:my-10 my-3"
+          enctype="application/x-www-form-urlencoded">
             <div class="md:text-4xl text-2xl mb-5 text-center">Вы уверены, что хотите верефицировать точку?</div>
             <p class="mb-3">Если вы уверены, впишите ФИО нового работника</p>
             <div class="form-row my-2">
-                  <!-- паттерн можно убрать , это для пафоса жесткого, в cлуаче pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,7}$" он для email, можно поставить на любую длинну pattern="^.{1,150}$"-->
                 <input class="w-full block" type="text" name="aprovePointUser" id="aprovePointUser" required>
                 <label for="aprovePointUser">ФИО работника</label>
             </div>
-            <!-- <div class="form-row mt-4">
-                <input class="w-full block" type="password" name="userPasswordForm" id="userPasswordForm" required>
-                <label for="userLoginForm">Пароль</label>
-            </div> -->
-            <!-- <div class="form-row mt-4">
-                <textarea class="w-full block" required pattern=""></textarea>
-                <label for="userLoginForm">Эта textarea просто для примера, убрать если не нужна</label>
-            </div> -->
             <div class="mt-2 button-row flex flex-col md:flex-row mt-4  ">
-                <button class="md:!mt-0 block md:w-1/2 text-center rounded-xl py-2 md:!py-1 md:mx-auto bg-green text-white mb-1 md:!mb-0 text-md md:text-md md:me-1" >Сохранить</button>
-                <a class="flex align-items-center justify-center px-1 py-2 md:!py-1  md:w-1/2 text-center rounded-xl mb-1 md:!mb-0  bg-green text-white text-md md:text-md md:ml-2" href="/account">Назад</a>
-
+                <button class="md:!mt-0 block md:w-1/2 text-center rounded-xl py-2 md:!py-1
+                md:mx-auto bg-green text-white mb-1 md:!mb-0 text-md md:text-md md:me-1" >Сохранить</button>
+                <a class="flex align-items-center justify-center px-1 py-2 md:!py-1  md:w-1/2 text-center rounded-xl
+                mb-1 md:!mb-0  bg-green text-white text-md md:text-md md:ml-2" href="/account">Назад</a>
             </div>
         </form>
     </div>
@@ -60,3 +53,5 @@
     <script src="/header.js"></script>
 </body>
 </html>
+
+

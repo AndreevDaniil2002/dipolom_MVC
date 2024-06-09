@@ -57,6 +57,5 @@ $(document).ready(() => {
                 console.error('Error fetching points:', error);
             });
     });
-
-
 })
+

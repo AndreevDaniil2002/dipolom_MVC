@@ -110,7 +110,6 @@ public class ApiController {
         }
     }
 
-
     //Перевод точки на исполнение сотрудником
     @PostMapping("/point/{pointId}/worker/{login}")
     public ResponseEntity<String> addWorker(@PathVariable Long pointId, @PathVariable String login) {
@@ -127,7 +126,6 @@ public class ApiController {
     @GetMapping("point/{point_id}/image")
     public ResponseEntity<List<ImageFromUser>> getImage(@PathVariable Long point_id) {
         try {
-            //System.out.println(appService.getAllImagesByPointId(point_id));
             return ResponseEntity.status(HttpStatus.OK).body(appService.getAllImagesByPointId(point_id));
         }
         catch (Exception e) {
@@ -159,10 +157,8 @@ public class ApiController {
     //Смена логина пользователя
     @PostMapping("/user/login/change")
     public ResponseEntity<Void> changeLogin(@RequestBody MyUser user, Authentication auth) {
-        //System.out.println("12354");
         try {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            //System.out.println("12354" + userDetails.getUsername());
             appService.changeLogin(user.getName(), userDetails.getUsername());
             return ResponseEntity.ok().build();
         }
@@ -176,7 +172,6 @@ public class ApiController {
     public String gerUsername(Authentication authentication){
         if (authentication != null) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            //System.out.println(userDetails.getUsername());
             return userDetails.getUsername();
         }
         return null;
@@ -195,7 +190,6 @@ public class ApiController {
     //Отказ точки админом
     @PostMapping("/points/reject/{pointId}")
     public ResponseEntity<String> RejectPoint(@PathVariable Long pointId, @RequestParam(required = false) String comment) {
-        System.out.println(pointId);
         try {
             appService.rejectPoint(pointId, comment);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -208,14 +202,10 @@ public class ApiController {
     //Получение всех точек для вывода на карту
     @GetMapping("/points")
     public ResponseEntity<List<Point>> getPoint(@RequestParam(required = false) String username){
-        //System.out.println(username);
         if (username != null) {
             List<Point> answer = appService.getAllPointsByUserName(username);
-            //System.out.println(answer);
             return ResponseEntity.status(HttpStatus.OK).body(answer);
         } else {
-            // Логика для получения всех точек независимо от пользователя
-            //System.out.println(appService.getAllPoints());
             return ResponseEntity.status(HttpStatus.OK).body(appService.getAllPoints());
         }
     }
@@ -261,7 +251,6 @@ public class ApiController {
     @GetMapping("/user/{userId}/role")
     public ResponseEntity<String> getRoleById(@PathVariable Long userId) {
         try {
-            System.out.println("123412341234 " + appService.getRoleById(userId));
             return ResponseEntity.status(HttpStatus.OK).body(appService.getRoleById(userId));
         }
         catch (Exception e) {
@@ -282,7 +271,6 @@ public class ApiController {
     //утановка роли пользователю по id
     @PostMapping("/user/{userId}/{role}")
     public ResponseEntity<Void> setRole(@PathVariable Long userId, @PathVariable String role) {
-        System.out.println(userId + " " + role);
         try {
             appService.setRole(userId, role);
             return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -314,7 +302,6 @@ public class ApiController {
     //Добавление нового юзера - регистрация
     @PostMapping("/new-user")
     public ResponseEntity<String> addUser(@RequestBody MyUser user) {
-        System.out.println(user);
         if (appService.findByLogin(user.getName()) != null) {
             // Пользователь с таким именем уже существует
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("User with this username already exists");
@@ -335,7 +322,6 @@ public class ApiController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String login = userDetails.getUsername();
         try {
-            System.out.println(appService.getUserByLogin(login));
             return ResponseEntity.status(HttpStatus.OK).body(appService.getUserByLogin(login));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -345,9 +331,7 @@ public class ApiController {
     //Получение ПД юзера
     @GetMapping("/personal-data/{userId}")
     public ResponseEntity<MyUser> getPersonalDataById (@PathVariable Long userId) {
-
         try {
-//            System.out.println(appService.getUserByUserId(userId));
             return ResponseEntity.status(HttpStatus.OK).body(appService.getUserByUserId(userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -400,7 +384,6 @@ public class ApiController {
     @GetMapping("/admin/cluster")
     public ResponseEntity<Long> getAllClusterNumbers(){
         try {
-            //System.out.println(appService.getUniqueClusterNumber());
             return ResponseEntity.status(HttpStatus.OK).body(appService.getUniqueClusterNumber());
         }
         catch (Exception e){
@@ -410,7 +393,6 @@ public class ApiController {
 
     @GetMapping("/admin/points/cluster/{clusterNumber}")
     public ResponseEntity<List<Point>> getPointsByClusterNumber(@PathVariable Long clusterNumber){
-        //System.out.println(clusterNumber);
         try {
             return ResponseEntity.status(HttpStatus.OK).body(appService.getPointsByClusterId(clusterNumber));
         }
@@ -466,7 +448,6 @@ public class ApiController {
 
     @PostMapping("/admin/points")
     public ResponseEntity<String> addPointFromPython(@RequestBody Point point){
-        //System.out.println(point);
         try {
             appService.addPointFromPython(point);
             return ResponseEntity.status(HttpStatus.OK).body("Point added successfully");

@@ -13,7 +13,5 @@ $(document).ready(() => {
                 if (res.ok){
                     alert("Точка верифицирована")
                     window.location.href = "/account"
-                }
-            })
-    })
-})  
+                }})})})
+

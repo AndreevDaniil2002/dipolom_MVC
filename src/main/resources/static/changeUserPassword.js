@@ -1,11 +1,5 @@
 $(document).ready(() => {
-    const changePasswordButton = $('#changePassword');
     const saveChangedUserDataForm = $('#saveChangedUserPassword');
-
-    const userFirstPass = $('#userFirstPassword').val();
-    const userSecondPass = $('#userSecondPassword').val();
-
-
     fetch("api/v1/user/avatar")
         .then(res => res.json())
         .then(data => {
@@ -13,7 +7,6 @@ $(document).ready(() => {
             const imgElement = document.querySelector('#userPhoto');
             imgElement.src = 'data:' + data.contentType + ';base64,' + data.bytes;
         })
-
     fetch("api/v1/personal-data")
         .then((res) =>
             res.json()
@@ -21,7 +14,6 @@ $(document).ready(() => {
         .then(data => {
             $('#userLoginForm').val(data.name)
         })
-   
     saveChangedUserDataForm.on('submit', (e) =>{
         e.preventDefault()
         if($('#userFirstPassword').val() !== $('#userSecondPassword').val()) {
@@ -41,14 +33,5 @@ $(document).ready(() => {
                 }
             })
     })
-
-
-
-
-    // changePasswordButton.on('submit', (e) =>{
-    //
-    //
-    // })
-
-
 })
+

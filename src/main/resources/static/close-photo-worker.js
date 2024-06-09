@@ -3,7 +3,6 @@ $(document).ready(() => {
     let point_longitude;
     const urlParams = new URLSearchParams(window.location.search);
     const pointId = urlParams.get('id');
-    // Используем Fetch API для получения данных
     fetch('/api/v1/points/' + pointId)
         .then(response => {
             if (!response.ok) {
@@ -28,7 +27,7 @@ $(document).ready(() => {
 
             function init() {
                 myMap = new ymaps.Map('map', {
-                    center: [point_longitude, point_latitude], // Москва
+                    center: [point_longitude, point_latitude],
                     zoom: 15
                 }, {
                     searchControlProvider: 'yandex#search'
@@ -79,8 +78,8 @@ $(document).ready(() => {
                 window.location.href = '/';
             })
             .catch(error => {
-                alert('Error: ' + error); // Всплывающее окно с сообщением об ошибке
+                alert('Error: ' + error);
             });
     });
-
 })
+

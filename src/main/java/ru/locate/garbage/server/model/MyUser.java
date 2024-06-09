@@ -39,3 +39,4 @@ public class MyUser {
     @JsonIgnore
     private UserAvatars UserAvatars;
 }
+

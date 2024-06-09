@@ -97,8 +97,9 @@ $(document).ready(() => {
                     window.location.href = '/';
                 })
                 .catch(error => {
-                    alert('Error: ' + error); // Всплывающее окно с сообщением об ошибке
+                    alert('Error: ' + error);
                 });
         });
     });
 })
+

@@ -21,7 +21,8 @@
     --bs-danger: #dc3545;
     --bs-light: #f8f9fa;
     --bs-dark: #212529;
-    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
 }
@@ -159,7 +160,6 @@ select {
 }
 
 @media screen and (min-width: 997px) {
-
 }
 
 
@@ -177,7 +177,6 @@ select {
 
 }
 
-/* новые правки */
 .one-photo {
     max-height: 500px;
 }
@@ -187,15 +186,11 @@ select {
     height: auto;
 }
 .one-photo img {
-    /* для максимальной высоты одинарной фотки */
     max-height: 500px;
-    /* для соотношения сторон одинарной фотки */
     aspect-ratio: 24 / 9;
 }
 .two-photo img {
-    /* для максимальной высоты двойной фотки */
     max-height: 500px;
-    /* для соотношения сторон двойной фотки */
     aspect-ratio: 1 / 1;
 }
 
@@ -256,7 +251,6 @@ input[type="submit"] {
     transform: rotate(-45deg);
 }
 
-/* доработки от 24.04.2024 */
 .menu .dropdown-item{
     border-radius: .3rem;
 }
@@ -282,7 +276,8 @@ textarea:valid ~label, textarea:focus-visible~label,textarea:focus~label {
     font-size: smaller;
 }
 
-input:not([type="file"]):focus~label, input:not([type="file"]):focus-visible~label, input:not([type="file"]):focus-within~label,input:not([type="file"]):valid ~label {
+input:not([type="file"]):focus~label, input:not([type="file"]):focus-visible~label,
+input:not([type="file"]):focus-within~label,input:not([type="file"]):valid ~label {
     position: absolute;
     left: 1rem;
     top: -45%;
@@ -388,3 +383,5 @@ input#userSearch, input#userSearch~input[type="submit"], #searchPointsForm input
     border: none;
     outline: none;
 }
+
+

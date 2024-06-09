@@ -1,15 +1,7 @@
 $(document).ready(() => {
     const changePasswordButton = $('#changePassword');
     const saveChangedUserDataForm = $('#saveChangedUserData');
-    let userName = $('#userLoginForm').val();
-    // const userPassword = $('#userPasswordForm').val();
-    let userFirstName = $('#userFirstNameForm').val();
-    let userLastName = $('#userLastNameForm').val();
-    let userPatronymicName = $('#userPatronymicForm').val();
-
     const urlSearch = new URLSearchParams(window.location.search)
-    const userId = urlSearch.get("id")
-
     fetch("api/v1/user/avatar")
         .then(res => res.json())
         .then(data => {
@@ -17,7 +9,6 @@ $(document).ready(() => {
             const imgElement = document.querySelector('#userPhoto');
             imgElement.src = 'data:' + data.contentType + ';base64,' + data.bytes;
         })
-
     fetch("api/v1/personal-data")
         .then((res) =>
             res.json()
@@ -27,9 +18,7 @@ $(document).ready(() => {
             $('#userFirstNameForm').val(data.firstName)
             $('#userLastNameForm').val(data.lastName)
             $('#userPatronymicForm').val(data.middleName)
-            //$('#userPhoto').src = 'data:' + res.contentType + ';base64,' + res.bytes;
         })
-
     $('#photoinput').on('change', (e) => {
         e.target.files[0];
         console.log(e.target.files[0])
@@ -46,7 +35,6 @@ $(document).ready(() => {
                 imgElement.src = 'data:' + data.contentType + ';base64,' + data.bytes;
             })
     })
-
     saveChangedUserDataForm.on('submit', (e) =>{
         e.preventDefault()
         let formData = new FormData()
@@ -64,10 +52,11 @@ $(document).ready(() => {
                     window.location.href = '/account'
                 }
             })
-        
     })
     changePasswordButton.on('click', (e) => {
         e.preventDefault();
         window.location.href = '/changeUserPassword'
     })
 })
+
+

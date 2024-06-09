@@ -23,7 +23,7 @@
                   <li><a class="dropdown-item" href="/new-point">Добавить новую точку</a></li>
                   <li><a class="dropdown-item" href="/map">Карта</a></li>
                   <li id="profileImg"><a class="dropdown-item" href="/account">
-                      <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square"                                 alt=""></a>
+                      <img src="/img/account_circle.svg" id="userAvatarMenu" class="aspect-square" alt=""></a>
                   </li>
               </ul>
           </div>
@@ -34,28 +34,23 @@
         <form method="post" class="login-form md:w-2/3 xl:w-1/2 md:max-w-[600px] w-full mx-auto md:my-10 my-3" >
             <div class="md:text-4xl text-2xl mb-5 text-center">Авторизация</div>
             <div class="form-row my-2">
-                  <!-- паттерн можно убрать , это для пафоса жесткого, в cлуаче pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,7}$" он для email, можно поставить на любую длинну pattern="^.{1,150}$"-->
-                <input class="w-full block" type="text" name="userLoginForm" id="userLoginForm" required placeholder="Логин"
-                
-                >
-<!--                <label for="userLoginForm">Логин</label>-->
+                <input class="w-full block" type="text" name="userLoginForm" id="userLoginForm" required placeholder="Логин">
             </div>
             <div class="form-row mt-4">
                 <input class="w-full block" type="password" name="userPasswordForm" id="userPasswordForm" required>
                 <label for="userLoginForm">Пароль</label>
             </div>
-            <!-- <div class="form-row mt-4">
-                <textarea class="w-full block" required pattern=""></textarea>
-                <label for="userLoginForm">Эта textarea просто для примера, убрать если не нужна</label>
-            </div> -->
             <div class="mt-2 button-row flex flex-col md:flex-row mt-5">
-                <button class="md:!mt-0 block md:w-1/2 text-center rounded-xl py-2 md:!py-1 md:mx-auto bg-green text-white text-md md:text-md" >Войти</button>
+                <button class="md:!mt-0 block md:w-1/2 text-center rounded-xl py-2 md:!py-1
+                md:mx-auto bg-green text-white text-md md:text-md" >Войти</button>
                 <div class="or md:mx-5 md:my-0 my-3 text-center text-2xl font-semibold">ИЛИ</div>
-                <a class="flex align-items-center justify-center px-1 py-2 md:!py-1  md:w-1/2 text-center rounded-xl md:mx-auto bg-green text-white text-md md:text-md" href="/register">Зарегистрироваться</a>
-
+                <a class="flex align-items-center justify-center px-1 py-2 md:!py-1
+                md:w-1/2 text-center rounded-xl md:mx-auto bg-green text-white text-md md:text-md" href="/register">Зарегистрироваться</a>
             </div>
         </form>
     </div>
     <script src="/login.js"></script>
 </body>
 </html>
+
+

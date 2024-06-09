@@ -36,7 +36,8 @@ $(document).ready(() => {
                       <label for="inputName">Роль</label>
                       ${select}
                     </div>
-                    <button class="d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl" type="submit">Изменить роль</button>
+                    <button class="d-block  md:w-1/2 text-center rounded-md py-3 px-5 md:mx-auto bg-green text-white text-xl md:text-xl" 
+                    type="submit">Изменить роль</button>
                     `
                     $('#userDataForAdmin').html(innerUserData);
                 })
