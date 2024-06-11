@@ -13,20 +13,16 @@ $(document).ready( () => {
         var map;
         ymaps.ready(function() {
             map = new ymaps.Map('map', {
-                center: [55, 34],
-                zoom: 10
+                center: [55.718498, 37.795159],
+                zoom: 16
             }, {
                 searchControlProvider: 'yandex#search'
             });
 
-            var geolocation = ymaps.geolocation;
-            geolocation.get({
-                provider: 'browser',
-                mapStateAutoApply: true
-            }).then(function(result) {
-                result.geoObjects.options.set('preset', 'islands#redCircleIcon');
-                map.geoObjects.add(result.geoObjects);
-            });
+            result = [55.718498, 37.795159]
+            var placemark = new ymaps.Placemark(result, {}, {preset: "islands#redCircleIcon"})
+            map.geoObjects.add(placemark);
+            // 55.718498, 37.795159
 
             fetch('/api/v1/points')
                 .then(response => response.json())

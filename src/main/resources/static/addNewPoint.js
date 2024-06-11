@@ -4,21 +4,27 @@ $(document).ready(() => {
     var map;
     ymaps.ready(function() {
         map = new ymaps.Map('map', {
-            center: [55, 34],
-            zoom: 10
+            center: [55.718498, 37.795159],
+            zoom: 16
         }, {
             searchControlProvider: 'yandex#search'
         });
 
-        var geolocation = ymaps.geolocation;
-        geolocation.get({
-            provider: 'browser',
-            mapStateAutoApply: true
-        }).then(function(result) {
-            result.geoObjects.options.set('preset', 'islands#redCircleIcon');
-            map.geoObjects.add(result.geoObjects);
-            $("#pointCardCoordinates").val(result.geoObjects.get(0).geometry.getCoordinates())
-        });
+        $("#pointCardCoordinates").val('55.718498, 37.795159')
+        result = [55.718498, 37.795159]
+        var placemark = new ymaps.Placemark(result, {}, {preset: "islands#redCircleIcon"})
+        map.geoObjects.add(placemark);
+        // 55.718498, 37.795159
+
+        // var geolocation = ymaps.geolocation;
+        // geolocation.get({
+        //     provider: 'browser',
+        //     mapStateAutoApply: true
+        // }).then(function(result) {
+        //     result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+        //     map.geoObjects.add(result.geoObjects);
+        //     $("#pointCardCoordinates").val(result.geoObjects.get(0).geometry.getCoordinates())
+        // });
 
         fetch('/api/v1/points')
             .then(response => response.json())
@@ -65,41 +71,43 @@ $(document).ready(() => {
     form.addEventListener('submit', function (event) {
         event.preventDefault(); // Предотвращаем отправку формы по умолчанию
 
-        ymaps.geolocation.get({
-            mapStateAutoApply: true,
-            provider: 'browser'
-        }).then(function (result) {
-            var userCoodinates = result.geoObjects.get(0).geometry.getCoordinates();
-            var formData = new FormData();
-            console.log(userCoodinates)
-            const description = document.querySelector("#pointCardDescription").value
-            const name = document.querySelector("#pointCardName").value
-            const file = document.querySelector("#pointCardFile")
-            formData.append('file', file.files[0]);
-            formData.append('name', name);
-            formData.append('latitude', userCoodinates[1])
-            formData.append('longitude', userCoodinates[0])
-            formData.append('description', description)
-            console.log(formData)
-            fetch('/api/v1/points', {
-                    method: 'POST',
-                    body: formData
+        // ymaps.geolocation.get({
+        //     mapStateAutoApply: true,
+        //     provider: 'browser'
+        // }).then(function (result) {
+
+        var userCoodinates = [55.718498, 37.795159]
+        var formData = new FormData();
+        console.log(userCoodinates)
+        const description = document.querySelector("#pointCardDescription").value
+        const name = document.querySelector("#pointCardName").value
+        const file = document.querySelector("#pointCardFile")
+        formData.append('file', file.files[0]);
+        formData.append('name', name);
+        formData.append('latitude', userCoodinates[1])
+        formData.append('longitude', userCoodinates[0])
+        formData.append('description', description)
+        console.log(formData)
+        fetch('/api/v1/points', {
+                method: 'POST',
+                body: formData
+            }
+        )
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
                 }
-            )
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.status);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    alert(data);
-                    window.location.href = '/';
-                })
-                .catch(error => {
-                    alert('Error: ' + error);
-                });
-        });
+                return response.text();
+            })
+            .then(data => {
+                alert(data);
+                window.location.href = '/';
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        // }
+        // )
     });
 })
 
