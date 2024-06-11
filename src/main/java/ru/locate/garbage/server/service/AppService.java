@@ -10,10 +10,7 @@ import ru.locate.garbage.server.model.*;
 import ru.locate.garbage.server.repository.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -88,9 +85,11 @@ public class AppService {
 
     public void closePointFromWorker(Long pointId, String comment) {
         Point point = pointRepository.findById(pointId).orElse(null);
+        assert point != null;
         point.setCommentFromAdmin(comment);
         point.setStatusForWorker("Закрыта");
         point.setStatusForUser("Закрыта");
+        point.setCloseDate(new Date());
         point.setStatusForAdmin(null);
         pointRepository.save(point);
     }

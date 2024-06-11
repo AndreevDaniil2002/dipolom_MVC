@@ -240,6 +240,7 @@ public class ApiController {
     @GetMapping("/points/{pointId}")
     public ResponseEntity<Point> getPointById(@PathVariable Long pointId) {
         Point point = appService.getPointById(pointId);
+        System.out.println(point);
         if (point != null) {
             return ResponseEntity.ok(point);
         } else {

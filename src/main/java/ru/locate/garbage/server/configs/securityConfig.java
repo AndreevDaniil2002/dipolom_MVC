@@ -31,7 +31,7 @@ public class securityConfig {
                         .requestMatchers("/map").permitAll()
                         .requestMatchers("/api/v1/points").permitAll()
                         .requestMatchers("/api/v1/new-user").permitAll()
-                        .requestMatchers("api/v1/admin/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").permitAll()
                         .requestMatchers("/api/v1/**").authenticated()
                         .requestMatchers("/account").authenticated()
                         .requestMatchers("/point-card/**").authenticated()

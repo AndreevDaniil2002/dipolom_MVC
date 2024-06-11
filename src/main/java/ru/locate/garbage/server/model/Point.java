@@ -49,6 +49,9 @@ public class Point {
         place = (long) -1;
     }
 
+    @Column(name="closeDate")
+    private Date closeDate;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private MyUser user;

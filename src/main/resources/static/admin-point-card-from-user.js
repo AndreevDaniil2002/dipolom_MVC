@@ -11,16 +11,22 @@ $(document).ready(() => {
             return response.json();
         })
         .then(data => {
-            const date = document.querySelector('.card-date-open span');
+            const dateOpen = document.querySelector('.card-date-open span');
+            const dateClose = document.querySelector('.card-date-close span');
+            const commentFromAdmin = document.querySelector('.comment-admin span')
             const status = document.querySelector('.card-status span');
             const description = document.querySelector('.card-description span');
             const name = document.querySelector('.card-name span');
-            date.innerText = new Date(data.date).toISOString().split('T')[0];
+
+            dateOpen.innerText = new Date(data.date).toISOString().split('T')[0];
+            dateClose.innerText = new Date(data.closeDate).toISOString().split('T')[0];
             status.innerText = data.statusForUser;
+            commentFromAdmin.innerText = data.commentFromAdmin;
             description.innerText = data.description;
             point_latitude = data.latitude;
             point_longitude = data.longitude;
             name.innerText = data.name;
+
             ymaps.ready(init);
             function init() {
                 myMap = new ymaps.Map('map', {

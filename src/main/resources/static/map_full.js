@@ -7,7 +7,6 @@ $(document).ready(() => {
         }, {
             searchControlProvider: 'yandex#search'
         });
-
         var geolocation = ymaps.geolocation;
         geolocation.get({
             provider: 'browser',

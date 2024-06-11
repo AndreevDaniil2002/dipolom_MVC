@@ -1,4 +1,4 @@
-document.ready(() => {
+$(document).ready(() => {
     var map;
     ymaps.ready(function() {
         map = new ymaps.Map('map', {
